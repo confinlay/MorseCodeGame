@@ -7,6 +7,7 @@
 .cpu    cortex-m0plus                                           @ Specify CPU type is Cortex M0+
 .thumb                                                          @ Specify thumb assembly for RP2040
 .global main_asm                                                @ Provide program starting address to the linker
+.global timer
 .align 4                                                        @ Specify code alignment
 
 .equ GPIO_BTN_DN_MSK_FE, 0x00040000                             @ Bit-18 for falling-edge event on GP20 - when released
@@ -37,9 +38,15 @@
 .equ SVC_ISR_OFFSET, 0x2C                                    @ The SVC is entry 11 in the vector table
 .equ SVC_MAX_INSTRS, 0x01                                    @ Maximum allowed SVC subroutines
 
+@ fuction to return the time value stored in r7
+timer:
+   movs   r0, r7   
+   bx     lr
+  
 
 @ Entry point to the ASM portion of the program
 main_asm:
+   push    {lr}
    bl      init_gpio_led                                    @ initialise the led pin
    bl      install_gpio_interrupt                           @ install the gpio interrupt on pin 21
    bl      init_button_20                                   @ initialise the button 20 pin
@@ -47,8 +54,7 @@ main_asm:
    bl      init_button_22                                   @ initialise the button 22 pin
    movs    r5, 0                                            @ intialising regs
    movs    r6, 0                                            @ intialising regs
-loop:
-    b       loop                                            @ Infinite loop
+   pop     {pc}
 
 
 .thumb_func

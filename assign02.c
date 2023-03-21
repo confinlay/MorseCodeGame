@@ -31,13 +31,20 @@ void asm_gpio_set_irq1(uint pin) {
  gpio_set_irq_enabled(pin, GPIO_IRQ_EDGE_RISE, true);
 }
 
+//function returns the value stored in r7, hasnt been tested with interval timer yet
+int32_t timer();
+
 // Main entry point of the application
 int main() {
  stdio_init_all(); // Initialise all basic IO
+ main_asm(); // Jump into the ASM to initialise pins and interrupt
 
  printf("Welcome to our Morse Code Game!\n"); // Basic print to console
 
+ int32_t holder = timer();
+ 
+ while(1){}; // loop forever
 
- main_asm(); // Jump into the ASM code
  return 0; // Application return code
 }
+
