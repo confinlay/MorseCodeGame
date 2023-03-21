@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
+#include "pico/time.h"
 
 // Declare the main assembly code entry point. //
 void main_asm();
@@ -40,6 +41,8 @@ int main() {
  main_asm(); // Jump into the ASM to initialise pins and interrupt
 
  printf("Welcome to our Morse Code Game!\n"); // Basic print to console
+
+ sleep_ms(5000);
 
  int32_t holder = timer();
  

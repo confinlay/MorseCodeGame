@@ -7,16 +7,13 @@
 .cpu    cortex-m0plus                                           @ Specify CPU type is Cortex M0+
 .thumb                                                          @ Specify thumb assembly for RP2040
 .global main_asm                                                @ Provide program starting address to the linker
-.global timer
+.global timer                                                   @ for calling timer function from the C program
 .align 4                                                        @ Specify code alignment
 
-.equ GPIO_BTN_DN_MSK_FE, 0x00040000                             @ Bit-18 for falling-edge event on GP20 - when released
-.equ GPIO_BTN_EN_MSK_FE, 0x00400000                             @ Bit-22 for falling-edge event on GP21 - when released
-.equ GPIO_BTN_UP_MSK_FE, 0x04000000                             @ Bit-26 for falling-edge event on GP22 - when released
-@ for rising edge i believe
-.equ GPIO_BTN_DN_MSK_RE, 0x00080000 @bit19 - when button is released 
-.equ GPIO_BTN_EN_MSK_RE, 0x00800000 @bit23 - when button is released 
-.equ GPIO_BTN_UP_MSK_RE, 0x08000000 @bit27 - when button is released  
+
+.equ GPIO_BTN_EN_MSK_FE, 0x00400000                          @ bit22 - when button is pressed 
+.equ GPIO_BTN_EN_MSK_RE, 0x00800000                          @ bit23 - when button is released 
+ 
 
 .equ CLEAR_UP_BUTTON_MSK, 0xC000000 @bit 26 + 27
 
@@ -38,7 +35,7 @@
 .equ SVC_ISR_OFFSET, 0x2C                                    @ The SVC is entry 11 in the vector table
 .equ SVC_MAX_INSTRS, 0x01                                    @ Maximum allowed SVC subroutines
 
-@ fuction to return the time value stored in r7
+@ fuction to return the time value stored in r7, can be called from the C program to get time interval
 timer:
    movs   r0, r7   
    bx     lr
@@ -47,13 +44,13 @@ timer:
 @ Entry point to the ASM portion of the program
 main_asm:
    push    {lr}
-   bl      init_gpio_led                                    @ initialise the led pin
-   bl      install_gpio_interrupt                           @ install the gpio interrupt on pin 21
-   bl      init_button_20                                   @ initialise the button 20 pin
-   bl      init_button_21                                   @ initialise the button 21 pin
-   bl      init_button_22                                   @ initialise the button 22 pin
-   movs    r5, 0                                            @ intialising regs
-   movs    r6, 0                                            @ intialising regs
+   bl      init_gpio_led                                         @ initialise the led pin
+   bl      install_gpio_interrupt                                @ install the gpio interrupt on pin 21
+   bl      init_button_20                                        @ initialise the button 20 pin
+   bl      init_button_21                                        @ initialise the button 21 pin
+   bl      init_button_22                                        @ initialise the button 22 pin
+   movs    r5, 0                                                 @ intialising regs
+   movs    r6, 0                                                 @ intialising regs
    pop     {pc}
 
 
@@ -61,42 +58,41 @@ main_asm:
 gpio_isr:
     @ load gpio interrupt register
     push   {lr}
-    ldr    r2, =(IO_BANK0_BASE + IO_BANK0_PROC0_INTS2_OFFSET)
-    ldr    r1, [r2]
-    adds   r3, r1, 0                         @just for debugging
+    ldr    r2, =(IO_BANK0_BASE + IO_BANK0_PROC0_INTS2_OFFSET)    @ load i/o register memory location 
+    ldr    r1, [r2]                                              @ load value into r2 to check which interrupt was triggered 
     
     @ check if its rising or falling edge
-    ldr    r0, =GPIO_BTN_EN_MSK_RE
-    subs   r2, r1, r0
-    beq    mid_released 
-    ldr    r0, =GPIO_BTN_EN_MSK_FE
-    subs   r1, r0
-    beq    mid_pressed 
+    ldr    r0, =GPIO_BTN_EN_MSK_RE                               @ load rising edge mask into r0
+    subs   r2, r1, r0                                            @ subtract it from the triggered interrupt
+    beq    mid_released                                          @ if the middle buttom was released  
+    ldr    r0, =GPIO_BTN_EN_MSK_FE                               @ load falling edge mask into r0
+    subs   r1, r0                                                @ subtract it from the triggered interrupt
+    beq    mid_pressed                                           @ if middle button was pressed
  
- @ deal with button pressed
+    @ deal with button pressed
 mid_pressed:
-    ldr     r2, =(TIMER_BASE + 0x28)
-    ldr     r1, [r2]
-    movs    r5, r1
-    subs    r7, r5, r6
-    ldr     r0, =GPIO_BTN_EN_MSK_FE
-    b       finish
+    ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
+    ldr     r1, [r2]                                             @ store the current time in r1
+    movs    r5, r1                                               @ move this to r5 (where we store the falling edge time snapshot)
+    subs    r7, r5, r6                                           @ take r6 away from this value to get the time difference since the last rising edge event
+    ldr     r0, =GPIO_BTN_EN_MSK_FE                              @ load the falling edge mask into r0 for clearing interrupt later on 
+    b       finish                                               @ branch to the end
 
  @ deal with button released
 mid_released:
-    ldr     r2, =(TIMER_BASE + 0x28)
-    ldr     r1, [r2]
-    movs    r6, r1
-    subs    r7, r6, r5
-    ldr     r0, =GPIO_BTN_EN_MSK_RE
-    b       finish
+    ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
+    ldr     r1, [r2]                                             @ store the current time in r1
+    movs    r6, r1                                               @ move this to r6 (where we store the rising edge time snapshot)
+    subs    r7, r6, r5                                           @ take r6 away from this value to get the time difference since the last rising edge event
+    ldr     r0, =GPIO_BTN_EN_MSK_RE                              @ load the rising edge mask into r0 for clearing interrupt later on 
+    b       finish                                               @ branch to the end
 
 
 finish:
     @ clear the interrupt and branch back to main
-    ldr    r2, =(IO_BANK0_BASE + IO_BANK0_INTR2_OFFSET)
-    str    r0, [r2]
-    pop    {pc}
+    ldr    r2, =(IO_BANK0_BASE + IO_BANK0_INTR2_OFFSET)          @ load register to clear interrupts
+    str    r0, [r2]                                              @ store whatever mask have in r0 at this address, clearing the interrupt
+    pop    {pc}                                                  @ go back to previous program execution
 
 
 install_gpio_interrupt:
