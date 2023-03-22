@@ -27,6 +27,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj"
   "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq.c.obj.d"
   "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj"
+  "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj"
+  "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj.d"
   "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj"
   "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj.d"
   "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_sync/sync.c.obj"

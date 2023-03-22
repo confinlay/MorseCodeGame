@@ -1,6 +1,7 @@
 # Hashes of file build rules.
 ac867123c67df598da32e13d2b1551bd CMakeFiles/ELF2UF2Build
 99fb5636ee64c7c58ca157a6827b1552 CMakeFiles/ELF2UF2Build-complete
+ac867123c67df598da32e13d2b1551bd CMakeFiles/assign02_led_pio_h
 76e57ad7dee45d6831890e01011f6a7b elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-build
 e562f0f1323b3dca2e7ab61912376742 elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-configure
 256478d95de3b42dff8110f5ed1b553a elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-download
@@ -8,6 +9,7 @@ e562f0f1323b3dca2e7ab61912376742 elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-con
 6f7fd4191534f577b15d62c483a1bd74 elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-mkdir
 19b694b528a5ec30d8d5ecde192f0315 elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-patch
 97809d07efb7ce3005da588ffc73dd38 elf2uf2/src/ELF2UF2Build-stamp/ELF2UF2Build-update
+f4aaea38d92878c0a6c523a4d3382822 led.pio.h
 18a0cfd0554a655bbc973a80a886a926 pico-sdk/src/rp2_common/boot_stage2/CMakeFiles/bs2_default_bin
 18a0cfd0554a655bbc973a80a886a926 pico-sdk/src/rp2_common/boot_stage2/CMakeFiles/bs2_default_padded_checksummed_asm
 6308557ceb195ab787f0b785961cd833 pico-sdk/src/rp2_common/boot_stage2/bs2_default.bin

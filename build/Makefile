@@ -130,6 +130,19 @@ assign02/fast:
 .PHONY : assign02/fast
 
 #=============================================================================
+# Target rules for targets named assign02_led_pio_h
+
+# Build rule for target.
+assign02_led_pio_h: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 assign02_led_pio_h
+.PHONY : assign02_led_pio_h
+
+# fast build rule for target.
+assign02_led_pio_h/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assign02_led_pio_h.dir/build.make CMakeFiles/assign02_led_pio_h.dir/build
+.PHONY : assign02_led_pio_h/fast
+
+#=============================================================================
 # Target rules for targets named ELF2UF2Build
 
 # Build rule for target.
@@ -547,6 +560,30 @@ Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.
 Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/assign02.dir/build.make CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj
 .PHONY : Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.S.obj
+
+Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.obj: Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
+.PHONY : Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.obj
+
+# target to build an object file
+Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assign02.dir/build.make CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
+.PHONY : Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
+
+Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.i: Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.i
+.PHONY : Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.i
+
+# target to preprocess a source file
+Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assign02.dir/build.make CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.i
+.PHONY : Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.i
+
+Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.s: Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.s
+.PHONY : Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.s
+
+# target to generate assembly for a file
+Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/assign02.dir/build.make CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.s
+.PHONY : Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.s
 
 Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pll/pll.obj: Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pll/pll.c.obj
 .PHONY : Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pll/pll.obj
@@ -1166,6 +1203,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... ELF2UF2Build"
 	@echo "... PioasmBuild"
+	@echo "... assign02_led_pio_h"
 	@echo "... bs2_default_bin"
 	@echo "... bs2_default_padded_checksummed_asm"
 	@echo "... cyw43_driver_picow_cyw43_bus_pio_spi_pio_h"
@@ -1213,6 +1251,9 @@ help:
 	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq.i"
 	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq.s"
 	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_irq/irq_handler_chain.obj"
+	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.obj"
+	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.i"
+	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.s"
 	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pll/pll.obj"
 	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pll/pll.i"
 	@echo "... Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pll/pll.s"

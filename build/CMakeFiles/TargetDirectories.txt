@@ -1,4 +1,5 @@
 /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/CMakeFiles/assign02.dir
+/Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/CMakeFiles/assign02_led_pio_h.dir
 /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/CMakeFiles/ELF2UF2Build.dir
 /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/CMakeFiles/edit_cache.dir
 /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/CMakeFiles/rebuild_cache.dir

@@ -715,6 +715,20 @@ CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_st
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.s"
 	/opt/homebrew/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c -o CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.s
 
+CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj: CMakeFiles/assign02.dir/flags.make
+CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj: /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c
+CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj: CMakeFiles/assign02.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Building C object CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj"
+	/opt/homebrew/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj -MF CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj.d -o CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj -c /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c
+
+CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.i"
+	/opt/homebrew/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c > CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.i
+
+CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.s"
+	/opt/homebrew/bin/arm-none-eabi-gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c -o CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.s
+
 # Object files for target assign02
 assign02_OBJECTS = \
 "CMakeFiles/assign02.dir/assign02.c.obj" \
@@ -763,7 +777,8 @@ assign02_OBJECTS = \
 "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_standard_link/new_delete.cpp.obj" \
 "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj" \
 "CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj" \
-"CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj"
+"CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj" \
+"CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj"
 
 # External object files for target assign02
 assign02_EXTERNAL_OBJECTS =
@@ -815,10 +830,11 @@ assign02.elf: CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_
 assign02.elf: CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_standard_link/binary_info.c.obj
 assign02.elf: CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio/stdio.c.obj
 assign02.elf: CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio_uart/stdio_uart.c.obj
+assign02.elf: CMakeFiles/assign02.dir/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/pio.c.obj
 assign02.elf: CMakeFiles/assign02.dir/build.make
 assign02.elf: pico-sdk/src/rp2_common/boot_stage2/bs2_default_padded_checksummed.S
 assign02.elf: CMakeFiles/assign02.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_48) "Linking CXX executable assign02.elf"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_49) "Linking CXX executable assign02.elf"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/assign02.dir/link.txt --verbose=$(VERBOSE)
 	/opt/homebrew/bin/arm-none-eabi-objcopy -Oihex /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/assign02.elf assign02.hex
 	/opt/homebrew/bin/arm-none-eabi-objcopy -Obinary /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/assign02.elf assign02.bin

@@ -1,23 +1,35 @@
 CMakeFiles/assign02.dir/assign02.c.obj: \
  /Users/conor/Desktop/pico/pico-apps/assignments/assign02/assign02.c \
- /Users/conor/Desktop/pico/pico-sdk/src/common/pico_stdlib/include/pico/stdlib.h \
- /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico.h \
- /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico/types.h \
- /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico/assert.h \
- /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h \
- /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/assert.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/stdio.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/_ansi.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/newlib.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/_newlib_version.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/config.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/machine/ieeefp.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/features.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/cdefs.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/machine/_default_types.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stddef.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdarg.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/reent.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/_ansi.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/_types.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/machine/_types.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/lock.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/stdio.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/stdlib.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/machine/stdlib.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/alloca.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/common/pico_stdlib/include/pico/stdlib.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico/types.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico/assert.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdbool.h \
+ /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/assert.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stdint.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/stdint.h \
- /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/machine/_default_types.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/_intsup.h \
  /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/_stdint.h \
- /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/lib/gcc/arm-none-eabi/12.2.1/include/stddef.h \
  /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/generated/pico_base/pico/version.h \
  /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico/config.h \
  /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/generated/pico_base/pico/config_autogen.h \
@@ -27,7 +39,6 @@ CMakeFiles/assign02.dir/assign02.c.obj: \
  /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/platform_defs.h \
  /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/addressmap.h \
  /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/sio.h \
- /Applications/ArmGNUToolchain/12.2.rel1/arm-none-eabi/arm-none-eabi/include/sys/cdefs.h \
  /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico/types.h \
  /Users/conor/Desktop/pico/pico-sdk/src/common/pico_base/include/pico/error.h \
  /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio/include/pico/stdio.h \
@@ -50,4 +61,12 @@ CMakeFiles/assign02.dir/assign02.c.obj: \
  /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/uart.h \
  /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/uart.h \
  /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/dreq.h \
- /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h
+ /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_stdio_uart/include/pico/stdio_uart.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/pio.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/pio.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_pio/include/hardware/pio_instructions.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/hardware_clocks/include/hardware/clocks.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_structs/include/hardware/structs/clocks.h \
+ /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs/include/hardware/regs/clocks.h \
+ /Users/conor/Desktop/pico/pico-apps/assignments/assign02/build/led.pio.h
