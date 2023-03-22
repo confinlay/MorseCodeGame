@@ -41,6 +41,7 @@ static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
             (uint32_t) (b);
 }
 
+// Functions to change the colour of the LED
 static inline void led_set_red() {
     put_pixel(urgb_u32(0x7F, 0x00, 0x00));
 }
