@@ -14,7 +14,6 @@
 .equ GPIO_BTN_EN_MSK_FE, 0x00400000                          @ bit22 - when button is pressed 
 .equ GPIO_BTN_EN_MSK_RE, 0x00800000                          @ bit23 - when button is released 
  
-
 .equ CLEAR_UP_BUTTON_MSK, 0xC000000 @bit 26 + 27
 
 .equ GPIO_BTN_DN, 20                                         @ Specify pin for the "down" button
@@ -43,7 +42,7 @@ timer:
 
 @ Entry point to the ASM portion of the program
 main_asm:
-   push    {lr}
+   
    bl      init_gpio_led                                         @ initialise the led pin
    bl      install_gpio_interrupt                                @ install the gpio interrupt on pin 21
    bl      init_button_20                                        @ initialise the button 20 pin
@@ -51,8 +50,11 @@ main_asm:
    bl      init_button_22                                        @ initialise the button 22 pin
    movs    r5, 0                                                 @ intialising regs
    movs    r6, 0                                                 @ intialising regs
-   pop     {pc}
+   
 
+loop:
+   
+   b       loop
 
 .thumb_func
 gpio_isr:
