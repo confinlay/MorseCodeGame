@@ -4,10 +4,11 @@ cmake_minimum_required(VERSION 3.13)
 # Include build functions from Pico SDK
 include($ENV{PICO_SDK_PATH}/external/pico_sdk_import.cmake)
 
-# Set name of project (as PROJECT_NAME) and C/C++ standards
-project(assign02 C CXX ASM)
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+# Generate the PIO header file from the PIO source file.
+pico_generate_pio_header(assign02 ${CMAKE_CURRENT_LIST_DIR}/ws2812.pio)
+
+# Pull in commonly used features.
+target_link_libraries(assign02 PRIVATE pico_stdlib hardware_pio)
 
 # Creates a pico-sdk subdirectory in our project for the libraries
 pico_sdk_init()
