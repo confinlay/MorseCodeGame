@@ -1,19 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+<<<<<<< assign02.c
+#include <math.h>
 #include "pico/stdlib.h"
+#include "pico/float.h"     // Required for using single-precision variables.
+#include "pico/double.h"    // Required for using double-precision variables.
+#include "pico/multicore.h" // Required for using multiple cores on the RP2040.
 #include "hardware/gpio.h"
 #include "pico/time.h"
-
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "ws2812.pio.h"
+
+// Must declare the main assembly entry point before use.
+=======
 
 #define IS_RGBW true        // Will use RGBW format
 #define NUM_PIXELS 1        // There is 1 WS2812 device in the chain
 #define WS2812_PIN 28       // The GPIO pin that the WS2812 connected to
 
 // Declare the main assembly code entry point. //
+>>>>>>> assign02.c
 void main_asm();
 // Initialise a GPIO pin – see SDK for detail on gpio_init()
 void asm_gpio_init(uint pin) {
@@ -77,6 +84,66 @@ int32_t timer();
 
 // Main entry point of the application
 int main() {
+<<<<<<< assign02.c
+    //main_asm();
+    welcomeMessage();
+    return(0);
+}
+
+// Print the welcome message
+void welcomeMessage() {
+    // 80 char width, pipes inclusive
+    printf(".______________________________________________________________________________.\n");
+    printf("|                    _____ _____   ____  _    _ _____    __                    |\n");
+    printf("|    Conor          / ____|  __ \\ / __ \\| |  | |  __ \\  /_ |            Joe    |\n");
+    printf("|    Finlay        | |  __| |__) | |  | | |  | | |__) |  | |        Mulvany    |\n");
+    printf("|                  | | |_ |  _  /| |  | | |  | |  ___/   | |                   |\n");
+    printf("|    Fionnan       | |__| | | \\ \\| |__| | |__| | |       | |        Tiernan    |\n");
+    printf("|    O\'Sullivan     \\_____|_|  \\_\\\\____/ \\____/|_|       |_|         Mullen    |\n");
+    printf(".______________________________________________________________________________.\n");
+    printf("|         ___           ___           ___           ___           ___          |\n");
+    printf("|        /\\__\\         /\\  \\         /\\  \\         /\\  \\         /\\  \\         |\n");
+    printf("|       /::|  |       /::\\  \\       /::\\  \\       /::\\  \\       /::\\  \\        |\n");
+    printf("|      /:|:|  |      /:/\\:\\  \\     /:/\\:\\  \\     /:/\\ \\  \\     /:/\\:\\  \\       |\n");
+    printf("|     /:/|:|__|__   /:/  \\:\\  \\   /::\\~\\:\\  \\   _\\:\\~\\ \\  \\   /::\\~\\:\\  \\      |\n");
+    printf("|    /:/ |::::\\__\\ /:/__/ \\:\\__\\ /:/\\:\\ \\:\\__\\ /\\ \\:\\ \\ \\__\\ /:/\\:\\ \\:\\__\\     |\n");
+    printf("|    \\/__/~~/:/  / \\:\\  \\ /:/  / \\/_|::\\/:/  / \\:\\ \\:\\ \\/__/ \\:\\~\\:\\ \\/__/     |\n");
+    printf("|          /:/  /   \\:\\  /:/  /     |:|::/  /   \\:\\ \\:\\__\\    \\:\\ \\:\\__\\       |\n");
+    printf("|         /:/  /     \\:\\/:/  /      |:|\\/__/     \\:\\/:/  /     \\:\\ \\/__/       |\n");
+    printf("|        /:/  /       \\::/  /       |:|  |        \\::/  /       \\:\\__\\         |\n");
+    printf("|        \\/__/         \\/__/         \\|__|         \\/__/         \\/__/         |\n");
+    printf("|               ___           ___           ___           ___                  |\n");
+    printf("|              /\\  \\         /\\  \\         /\\  \\         /\\  \\                 |\n");
+    printf("|             /::\\  \\       /::\\  \\       /::\\  \\       /::\\  \\                |\n");
+    printf("|            /:/\\:\\  \\     /:/\\:\\  \\     /:/\\:\\  \\     /:/\\:\\  \\               |\n");
+    printf("|           /:/  \\:\\  \\   /:/  \\:\\  \\   /:/  \\:\\__\\   /::\\~\\:\\  \\              |\n");
+    printf("|          /:/__/ \\:\\__\\ /:/__/ \\:\\__\\ /:/__/ \\:|__| /:/\\:\\ \\:\\__\\             |\n");
+    printf("|          \\:\\  \\  \\/__/ \\:\\  \\ /:/  / \\:\\  \\ /:/  / \\:\\~\\:\\ \\/__/             |\n");
+    printf("|           \\:\\  \\        \\:\\  /:/  /   \\:\\  /:/  /   \\:\\ \\:\\__\\               |\n");
+    printf("|            \\:\\  \\        \\:\\/:/  /     \\:\\/:/  /     \\:\\ \\/__/               |\n");
+    printf("|             \\:\\__\\        \\::/  /       \\::/__/       \\:\\__\\                 |\n");
+    printf("|              \\/__/         \\/__/         ~~            \\/__/                 |\n");
+    printf("|               ___           ___           ___           ___                  |\n");
+    printf("|              /\\  \\         /\\  \\         /\\__\\         /\\  \\                 |\n");
+    printf("|             /::\\  \\       /::\\  \\       /::|  |       /::\\  \\                |\n");
+    printf("|            /:/\\:\\  \\     /:/\\:\\  \\     /:|:|  |      /:/\\:\\  \\               |\n");
+    printf("|           /:/  \\:\\  \\   /::\\~\\:\\  \\   /:/|:|__|__   /::\\~\\:\\  \\              |\n");
+    printf("|          /:/__/_\\:\\__\\ /:/\\:\\ \\:\\__\\ /:/ |::::\\__\\ /:/\\:\\ \\:\\__\\             |\n");
+    printf("|          \\:\\  /\\ \\/__/ \\/__\\:\\/:/  / \\/__/~~/:/  / \\:\\~\\:\\ \\/__/             |\n");
+    printf("|           \\:\\ \\:\\__\\        \\::/  /        /:/  /   \\:\\ \\:\\__\\               |\n");
+    printf("|            \\:\\/:/  /        /:/  /        /:/  /     \\:\\ \\/__/               |\n");
+    printf("|             \\::/  /        /:/  /        /:/  /       \\:\\__\\                 |\n");
+    printf("|              \\/__/         \\/__/         \\/__/         \\/__/                 |\n");
+    printf(".______________________________________________________________________________.\n");
+    printf("|                                                                              |\n");
+    printf("|           Enter a sequence of dots and dashes using GP21 to begin!           |\n");
+    printf("|                                                                              |\n");
+    printf("|                                                                              |\n");
+    printf("|                                                                              |\n");
+    printf("|                                                                              |\n");
+    printf(".______________________________________________________________________________.\n");
+}
+=======
  stdio_init_all(); // Initialise all basic IO
  
  // LED initialisation 
@@ -94,3 +161,4 @@ int main() {
  return 0; // Application return code
 }
 
+>>>>>>> assign02.c
