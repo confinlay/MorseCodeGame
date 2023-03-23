@@ -43,7 +43,7 @@ timer:
 
 @ Entry point to the ASM portion of the program
 main_asm:
-   push    {lr}
+   
    bl      init_gpio_led                                         @ initialise the led pin
    bl      install_gpio_interrupt                                @ install the gpio interrupt on pin 21
    bl      init_button_20                                        @ initialise the button 20 pin
@@ -51,8 +51,9 @@ main_asm:
    bl      init_button_22                                        @ initialise the button 22 pin
    movs    r5, 0                                                 @ intialising regs
    movs    r6, 0                                                 @ intialising regs
-   pop     {pc}
-
+   
+loop: 
+   b       loop
 
 .thumb_func
 gpio_isr:
