@@ -162,3 +162,20 @@ void welcomeMessage() {
 }
 
 >>>>>>> assign02.c
+// Return a random character from 0-9 or A-Z when called
+char randomChar() {
+    // Use the current microsecond count to seed the random number generator
+    uint64_t seed = time_us_64();
+    srand(seed);
+
+    // Generate a random number (0 - 9: numbers; 10 - 35: letters)
+    int random_num = rand() % 35;
+
+    // If 0 -> 9, return straight away
+    // Otherwise, convert the number to an uppercase letter and return the letter
+    if (random_num < 10) {
+        return random_num + '0';
+    } else {
+        return (random_num - 10) + 'A';
+    }
+}
