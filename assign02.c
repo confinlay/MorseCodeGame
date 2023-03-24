@@ -12,6 +12,13 @@
 #include "hardware/clocks.h"
 #include "ws2812.pio.h"
 
+<<<<<<< assign02.c
+=======
+#define IS_RGBW true        // Will use RGBW format
+#define NUM_PIXELS 1        // There is 1 WS2812 device in the chain
+#define WS2812_PIN 28       // The GPIO pin that the WS2812 connected to
+
+>>>>>>> assign02.c
 // Must declare the main assembly entry point before use.
 void main_asm();
 // Initialise a GPIO pin – see SDK for detail on gpio_init()
@@ -148,3 +155,25 @@ void welcomeMessage() {
     printf("|                                                                              |\n");
     printf(".______________________________________________________________________________.\n");
 }
+<<<<<<< assign02.c
+=======
+
+
+// Return a random character from 0-9 or A-Z when called
+char randomChar() {
+    // Use the current microsecond count to seed the random number generator
+    uint64_t seed = time_us_64();
+    srand(seed);
+
+    // Generate a random number (0 - 9: numbers; 10 - 35: letters)
+    int random_num = rand() % 35;
+
+    // If 0 -> 9, return straight away
+    // Otherwise, convert the number to an uppercase letter and return the letter
+    if (random_num < 10) {
+        return random_num + '0';
+    } else {
+        return (random_num - 10) + 'A';
+    }
+}
+>>>>>>> assign02.c
