@@ -39,6 +39,7 @@ void watchdog_init(){
         printf("Game Restarted due to inactivity!\n");
     }
 //enable the watchdogtimer set to the max time, approx 8.3 secs
+//One sets
  watchdog_enable(0x7fffff, 1); 
  watchdog_update();
 }
