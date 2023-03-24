@@ -51,11 +51,9 @@ main_asm:
    bl      init_button_22                                        @ initialise the button 22 pin
    movs    r5, 0                                                 @ intialising regs
    movs    r6, 0                                                 @ intialising regs
-
+   
 loop: 
-    b loop
-  
-
+   b       loop
 
 .thumb_func
 gpio_isr:
@@ -80,8 +78,6 @@ mid_pressed:
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r5, r1                                               @ move this to r5 (where we store the falling edge time snapshot)
     subs    r7, r5, r6                                           @ take r6 away from this value to get the time difference since the last rising edge event    
-    @movs    r0, r7
-    @bl printf
     ldr     r0, =GPIO_BTN_EN_MSK_FE                              @ load the falling edge mask into r0 for clearing interrupt later on 
     b       finish                                               @ branch to the end
 
@@ -98,9 +94,8 @@ mid_released:
 finish:
     @ clear the interrupt and branch back to main
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_INTR2_OFFSET)          @ load register to clear interrupts
-    str    r0, [r2]   
-    @update watchdog
-    bl      watchdog_update                                           @ store whatever mask have in r0 at this address, clearing the interrupt
+    str    r0, [r2]                                              @ store whatever mask have in r0 at this address, clearing the interrupt
+    bl      watchdog_update                                      @ update watchdog                                
     pop    {pc}                                                  @ go back to previous program execution
 
 
