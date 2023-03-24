@@ -6,15 +6,19 @@
 #include "pico/double.h"    // Required for using double-precision variables.
 #include "pico/multicore.h" // Required for using multiple cores on the RP2040.
 #include "hardware/gpio.h"
+#include "hardware/watchdog.h"
 #include "pico/time.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 #include "ws2812.pio.h"
 
+<<<<<<< assign02.c
+=======
 #define IS_RGBW true        // Will use RGBW format
 #define NUM_PIXELS 1        // There is 1 WS2812 device in the chain
 #define WS2812_PIN 28       // The GPIO pin that the WS2812 connected to
 
+>>>>>>> assign02.c
 // Must declare the main assembly entry point before use.
 void main_asm();
 // Initialise a GPIO pin – see SDK for detail on gpio_init()
@@ -74,11 +78,25 @@ static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
 }
 
 
+//initialise watchdog timer
+void watchdog_init(){
+    if(watchdog_caused_reboot){
+        printf("Game Restarted due to inactivity!\n");
+    }
+//enable the watchdogtimer set to the max time, approx 8.3 secs
+//One sets the watchdog timer to pause during debug 
+ watchdog_enable(0x7fffff, 1); 
+ watchdog_update();
+}
+
+
 //function returns the value stored in r7, hasnt been tested with interval timer yet
 int32_t timer();
 
 // Main entry point of the application
 int main() {
+    stdio_init_all(); // Initialise all basic IO
+    watchdog_init(); // Initialise watchdog timer
     //main_asm();
     welcomeMessage();
     return(0);
@@ -137,6 +155,8 @@ void welcomeMessage() {
     printf("|                                                                              |\n");
     printf(".______________________________________________________________________________.\n");
 }
+<<<<<<< assign02.c
+=======
 
 
 // Return a random character from 0-9 or A-Z when called
@@ -156,3 +176,4 @@ char randomChar() {
         return (random_num - 10) + 'A';
     }
 }
+>>>>>>> assign02.c
