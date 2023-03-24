@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
+#include "hardware/watchdog.h"
 #include "pico/time.h"
 
 // Declare the main assembly code entry point. //
@@ -32,12 +33,23 @@ void asm_gpio_set_irq1(uint pin) {
  gpio_set_irq_enabled(pin, GPIO_IRQ_EDGE_RISE, true);
 }
 
+//initialise watchdog timer
+void watchdog_init(){
+    if(watchdog_caused_reboot){
+        printf("Game Restarted due to inactivity!\n");
+    }
+//enable the watchdogtimer set to the max time, approx 8.3 secs
+ watchdog_enable(0x7fffff, 1); 
+ watchdog_update();
+}
+
 //function returns the value stored in r7, hasnt been tested with interval timer yet
 int32_t timer();
 
 // Main entry point of the application
 int main() {
  stdio_init_all(); // Initialise all basic IO
+ watchdog_init(); // Initialise watchdog timer
  main_asm(); // Jump into the ASM to initialise pins and interrupt
 
  printf("Welcome to our Morse Code Game!\n"); // Basic print to console
