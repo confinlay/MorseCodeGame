@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-<<<<<<< assign02.c
 #include <math.h>
 #include "pico/stdlib.h"
 #include "pico/float.h"     // Required for using single-precision variables.
@@ -12,15 +11,11 @@
 #include "hardware/clocks.h"
 #include "ws2812.pio.h"
 
-// Must declare the main assembly entry point before use.
-=======
-
 #define IS_RGBW true        // Will use RGBW format
 #define NUM_PIXELS 1        // There is 1 WS2812 device in the chain
 #define WS2812_PIN 28       // The GPIO pin that the WS2812 connected to
 
-// Declare the main assembly code entry point. //
->>>>>>> assign02.c
+// Must declare the main assembly entry point before use.
 void main_asm();
 // Initialise a GPIO pin – see SDK for detail on gpio_init()
 void asm_gpio_init(uint pin) {
@@ -84,7 +79,6 @@ int32_t timer();
 
 // Main entry point of the application
 int main() {
-<<<<<<< assign02.c
     //main_asm();
     welcomeMessage();
     return(0);
@@ -143,25 +137,8 @@ void welcomeMessage() {
     printf("|                                                                              |\n");
     printf(".______________________________________________________________________________.\n");
 }
-=======
- stdio_init_all(); // Initialise all basic IO
- 
- // LED initialisation 
- PIO pio = pio0; 
- uint offset = pio_add_program(pio, &ws2812_program);
- ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
 
- main_asm(); // Jump into the ASM to initialise pins and interrupt
 
- printf("Welcome to our Morse Code Game!\n"); // Basic print to console
-
- 
- while(1){}; // loop forever
-
- return 0; // Application return code
-}
-
->>>>>>> assign02.c
 // Return a random character from 0-9 or A-Z when called
 char randomChar() {
     // Use the current microsecond count to seed the random number generator
