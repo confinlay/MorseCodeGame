@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "pico/stdlib.h"
-#include "pico/float.h"     // Required for using single-precision variables.
-#include "pico/double.h"    // Required for using double-precision variables.
-#include "pico/multicore.h" // Required for using multiple cores on the RP2040.
+
 #include "hardware/gpio.h"
 #include "hardware/watchdog.h"
 #include "pico/time.h"
@@ -12,13 +10,10 @@
 #include "hardware/clocks.h"
 #include "ws2812.pio.h"
 
-<<<<<<< assign02.c
-=======
 #define IS_RGBW true        // Will use RGBW format
 #define NUM_PIXELS 1        // There is 1 WS2812 device in the chain
 #define WS2812_PIN 28       // The GPIO pin that the WS2812 connected to
 
->>>>>>> assign02.c
 // Must declare the main assembly entry point before use.
 void main_asm();
 // Initialise a GPIO pin – see SDK for detail on gpio_init()
@@ -47,6 +42,8 @@ void asm_gpio_set_irq(uint pin) {
 void asm_gpio_set_irq1(uint pin) {
  gpio_set_irq_enabled(pin, GPIO_IRQ_EDGE_RISE, true);
 }
+
+void welcomeMessage();
 
 /**
  * @brief Wrapper function used to call the underlying PIO
@@ -83,24 +80,86 @@ void watchdog_init(){
     if(watchdog_caused_reboot){
         printf("Game Restarted due to inactivity!\n");
     }
-//enable the watchdogtimer set to the max time, approx 8.3 secs
-//One sets the watchdog timer to pause during debug 
- watchdog_enable(0x7fffff, 1); 
- watchdog_update();
+    //enable the watchdogtimer set to the max time, approx 8.3 secs
+    //One sets the watchdog timer to pause during debug 
+    watchdog_enable(0x7fffff, 0); 
+    watchdog_update();
 }
 
+//need to be global cuz we jump in and out of ASM
+int input = 0;
+int start_high = 0; // this is set to 1 after the first button release (rising edge) and should stay like this while the game is running
+int start_low = 0;
+int i = 0;
+int first[7];
+bool type = true;
+uint32_t low_interval, high_interval;
+
+void set_start_high(int i){
+    start_high = i;
+}
+
+void set_start_low(int i){
+    start_low = i;
+}
+
+void check_for_interrupt(int signal){
+    input = signal;
+}
+
+void store_interval_low(int interval){
+    low_interval = interval;
+}
+
+void store_interval_high(int interval){
+    high_interval = interval;
+}
 
 //function returns the value stored in r7, hasnt been tested with interval timer yet
-int32_t timer();
+int32_t time_pressed();
+int32_t time_space();
+void reset();
 
 // Main entry point of the application
 int main() {
     stdio_init_all(); // Initialise all basic IO
-    watchdog_init(); // Initialise watchdog timer
-    //main_asm();
-    welcomeMessage();
+    //watchdog_init(); // Initialise watchdog timer
+    main_asm(); // Initialise pins and interrupt
+    welcomeMessage(); // print welcome message
+
+    uint32_t starter = 0;
+
+    while (i < 7){
+        //set timer for 2 seconds, loop until that runs out, then pass the sequence to the game
+        if (input){ //if there was an interrupt
+            if (type && start_high == 1){
+                i++;
+                first[i-1] = high_interval;
+                type = false;
+                input = 0;
+            } else {
+                if (start_low == 1){
+                    i++;
+                    first[i-1] = low_interval;
+                    type = true;  
+                    input = 0; 
+                }
+                 
+            }
+            
+        }
+        
+    }
+    printf("made it past !\n");
+    printf("starter: %d", starter);
+    
+    while (1){
+
+    };
+
     return(0);
 }
+
 
 // Print the welcome message
 void welcomeMessage() {
@@ -150,13 +209,11 @@ void welcomeMessage() {
     printf("|                                                                              |\n");
     printf("|           Enter a sequence of dots and dashes using GP21 to begin!           |\n");
     printf("|                                                                              |\n");
-    printf("|                                                                              |\n");
+    printf("|                            Level 1 : .----                                   |\n");
     printf("|                                                                              |\n");
     printf("|                                                                              |\n");
     printf(".______________________________________________________________________________.\n");
 }
-<<<<<<< assign02.c
-=======
 
 
 // Return a random character from 0-9 or A-Z when called
@@ -176,4 +233,3 @@ char randomChar() {
         return (random_num - 10) + 'A';
     }
 }
->>>>>>> assign02.c

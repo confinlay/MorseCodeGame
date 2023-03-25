@@ -7,7 +7,14 @@
 .cpu    cortex-m0plus                                           @ Specify CPU type is Cortex M0+
 .thumb                                                          @ Specify thumb assembly for RP2040
 .global main_asm                                                @ Provide program starting address to the linker
-.global timer                                                   @ for calling timer function from the C program
+.global time_pressed                                            @ for calling timer function from the C program
+.global time_space
+.global store_interval_low
+.global store_interval_high
+.global set_start_high
+.global set_start_low
+.global reset
+.global check_for_interrupt
 .align 4                                                        @ Specify code alignment
 
 
@@ -34,33 +41,38 @@
 
 .equ SVC_ISR_OFFSET, 0x2C                                    @ The SVC is entry 11 in the vector table
 .equ SVC_MAX_INSTRS, 0x01                                    @ Maximum allowed SVC subroutines
+.equ NEW_INTERRUPT, 1
 
 @ fuction to return the time value stored in r7, can be called from the C program to get time interval
-timer:
+time_pressed:
    movs   r0, r7   
    bx     lr
-  
+
+time_space:
+   movs   r0, r4
+   bx     lr
+
+reset:
+   movs   r3, 0
+   bx     lr
 
 @ Entry point to the ASM portion of the program
 main_asm:
-   
+   push    {lr}
    bl      init_gpio_led                                         @ initialise the led pin
    bl      install_gpio_interrupt                                @ install the gpio interrupt on pin 21
-   bl      init_button_20                                        @ initialise the button 20 pin
    bl      init_button_21                                        @ initialise the button 21 pin
-   bl      init_button_22                                        @ initialise the button 22 pin
    movs    r5, 0                                                 @ intialising regs
    movs    r6, 0                                                 @ intialising regs
-   
-loop: 
-   b       loop
+   movs    r4, 0
+   movs    r3, 0
+   pop     {pc}
+
 
 .thumb_func
 gpio_isr:
-    @update watchdog
-    bl      watchdog_update
-    @ load gpio interrupt register
-    push   {lr}
+    push   {lr} 
+    @bl     watchdog_update                                       @update watchdog
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_PROC0_INTS2_OFFSET)    @ load i/o register memory location 
     ldr    r1, [r2]                                              @ load value into r2 to check which interrupt was triggered 
     
@@ -77,7 +89,12 @@ mid_pressed:
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r5, r1                                               @ move this to r5 (where we store the falling edge time snapshot)
-    subs    r7, r5, r6                                           @ take r6 away from this value to get the time difference since the last rising edge event    
+    cmp     r6, #0
+    beq     first_iteration
+    subs    r0, r5, r6                                           @ take r6 away from this value to get the time difference since the last rising edge event    
+    bl      store_interval_low
+    movs    r0, 1
+    bl      set_start_low
     ldr     r0, =GPIO_BTN_EN_MSK_FE                              @ load the falling edge mask into r0 for clearing interrupt later on 
     b       finish                                               @ branch to the end
 
@@ -86,17 +103,26 @@ mid_released:
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r6, r1                                               @ move this to r6 (where we store the rising edge time snapshot)
-    subs    r7, r6, r5                                           @ take r6 away from this value to get the time difference since the last rising edge event
+    subs    r0, r6, r5                                           @ take r6 away from this value to get the time difference since the last rising edge event
+    bl      store_interval_high
+    movs    r0, 1
+    bl      set_start_high
     ldr     r0, =GPIO_BTN_EN_MSK_RE                              @ load the rising edge mask into r0 for clearing interrupt later on 
     b       finish                                               @ branch to the end
 
+first_iteration:
+    ldr     r0, =GPIO_BTN_EN_MSK_FE                              @ load the falling edge mask into r0 for clearing interrupt later on 
+    b       finish
 
 finish:
     @ clear the interrupt and branch back to main
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_INTR2_OFFSET)          @ load register to clear interrupts
     str    r0, [r2]                                              @ store whatever mask have in r0 at this address, clearing the interrupt
-    bl      watchdog_update                                      @ update watchdog                                
+    bl     watchdog_update                                       @ update watchdog                       
+    movs   r0, NEW_INTERRUPT
+    bl     check_for_interrupt
     pop    {pc}                                                  @ go back to previous program execution
+
 
 
 install_gpio_interrupt:
@@ -137,31 +163,6 @@ init_button_21:
     bl      asm_gpio_set_irq1
     pop     {pc}                                                 @ pop the program counter to return to where we were before
 
-init_button_22:
-    push    {lr}                                                 @ push the link register, we will call other functions within this one
-    movs    r0, #GPIO_BTN_UP                                     @ This value is the GPIO button pin on the PI PICO 
-    bl      asm_gpio_init                                        @ intialise the button pin
-    movs    r0, #GPIO_BTN_UP                                     @ This value is the GPIO button pin on the PI PICO 
-    movs    r1, #GPIO_DIR_IN                                     @ We want this GPIO pin to be setup as an input pin
-    bl      asm_gpio_set_dir                                     @ Call the subroutine to set the GPIO pin specified by r0 to state specified by r1
-    movs    r0, #GPIO_BTN_UP                                     @ move the gpio button pin to r0 so we can enable the falling edge interrupt 
-    bl      asm_gpio_set_irq                                     @ enable the falling edge interrupt
-    movs    r0, #GPIO_BTN_UP
-    bl      asm_gpio_set_irq1
-    pop     {pc}                                                 @ pop the program counter to return to where we were before
-
-init_button_20:
-    push    {lr}                                                 @ push the link register, we will call other functions within this one
-    movs    r0, #GPIO_BTN_DN                                     @ This value is the GPIO button pin on the PI PICO 
-    bl      asm_gpio_init                                        @ intialise the button pin
-    movs    r0, #GPIO_BTN_DN                                     @ This value is the GPIO button pin on the PI PICO 
-    movs    r1, #GPIO_DIR_IN                                     @ We want this GPIO pin to be setup as an input pin
-    bl      asm_gpio_set_dir                                     @ Call the subroutine to set the GPIO pin specified by r0 to state specified by r1
-    movs    r0, #GPIO_BTN_DN                                     @ move the gpio button pin to r0 so we can enable the falling edge interrupt 
-    bl      asm_gpio_set_irq                                     @ enable the falling edge interrupt
-    movs    r0, #GPIO_BTN_UP
-    bl      asm_gpio_set_irq1
-    pop     {pc}  
 
 @ Set data alignment
 .data
