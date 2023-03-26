@@ -6,21 +6,19 @@
 .syntax unified                                                 @ Specify unified assembly syntax
 .cpu    cortex-m0plus                                           @ Specify CPU type is Cortex M0+
 .thumb                                                          @ Specify thumb assembly for RP2040
-.global main_asm                                                @ Provide program starting address to the linker
-.global time_pressed                                            @ for calling timer function from the C program
-.global time_space
-.global store_interval_low
-.global store_interval_high
-.global set_start_high
-.global set_start_low
-.global reset
-.global check_for_interrupt
+.global main_asm                                                @ Provide program starting address to the linker                                     
+.global store_interval_low                                      @function declaration
+.global store_interval_high                                     @function declaration
+.global set_start_high                                          @function declaration
+.global set_start_low                                           @function declaration
+.global reset                                                   @function declaration
+.global check_for_interrupt                                     @function declaration
 .align 4                                                        @ Specify code alignment
 
 
 .equ GPIO_BTN_EN_MSK_FE, 0x00400000                          @ bit22 - when button is pressed, falling edge
 .equ GPIO_BTN_EN_MSK_RE, 0x00800000                          @ bit23 - when button is released, rising edge
- 
+
 
 .equ CLEAR_UP_BUTTON_MSK, 0xC000000 @bit 26 + 27
 
@@ -43,18 +41,6 @@
 .equ SVC_MAX_INSTRS, 0x01                                    @ Maximum allowed SVC subroutines
 .equ NEW_INTERRUPT, 1
 
-@ fuction to return the time value stored in r7, can be called from the C program to get time interval
-time_pressed:
-   movs   r0, r7   
-   bx     lr
-
-time_space:
-   movs   r0, r4
-   bx     lr
-
-reset:
-   movs   r3, 0
-   bx     lr
 
 @ Entry point to the ASM portion of the program
 main_asm:
@@ -64,15 +50,15 @@ main_asm:
    bl      init_button_21                                        @ initialise the button 21 pin
    movs    r5, 0                                                 @ intialising regs
    movs    r6, 0                                                 @ intialising regs
-   movs    r4, 0
-   movs    r3, 0
+   movs    r4, 0                                                 @ intialising regs
+   movs    r3, 0                                                 @ intialising regs
    pop     {pc}
 
 
 .thumb_func
 gpio_isr:
     push   {lr} 
-    @bl     watchdog_update                                       @update watchdog
+    @bl     watchdog_update                                      @update watchdog
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_PROC0_INTS2_OFFSET)    @ load i/o register memory location 
     ldr    r1, [r2]                                              @ load value into r2 to check which interrupt was triggered 
     
@@ -89,12 +75,12 @@ mid_pressed:
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r5, r1                                               @ move this to r5 (where we store the falling edge time snapshot)
-    cmp     r6, #0
-    beq     first_iteration
+    cmp     r6, #0                                               @ if r6 is zero then its the first falling edge interrupt and we don't want to compare time values since we only have 1
+    beq     first_iteration                                      @ skip the time storing steps
     subs    r0, r5, r6                                           @ take r6 away from this value to get the time difference since the last rising edge event    
-    bl      store_interval_low
-    movs    r0, 1
-    bl      set_start_low
+    bl      store_interval_low                                   @ store the time between button presses
+    movs    r0, 1                                                @ move 1 to r0 so that we can set the start_low value in the c program
+    bl      set_start_low                                        @ set the start_low value to 1 in the c program to indicate we can start recording the time intervals
     ldr     r0, =GPIO_BTN_EN_MSK_FE                              @ load the falling edge mask into r0 for clearing interrupt later on 
     b       finish                                               @ branch to the end
 
@@ -104,23 +90,23 @@ mid_released:
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r6, r1                                               @ move this to r6 (where we store the rising edge time snapshot)
     subs    r0, r6, r5                                           @ take r6 away from this value to get the time difference since the last rising edge event
-    bl      store_interval_high
-    movs    r0, 1
-    bl      set_start_high
+    bl      store_interval_high                                  @ store the time interval between the button being pressed and released
+    movs    r0, 1                                                @ move 1 to r0 so that we can the the start_high value in the c program
+    bl      set_start_high                                       @ set the start_high value to 1 in the c program to inidicate that we can start recording the time intervals
     ldr     r0, =GPIO_BTN_EN_MSK_RE                              @ load the rising edge mask into r0 for clearing interrupt later on 
     b       finish                                               @ branch to the end
 
 first_iteration:
     ldr     r0, =GPIO_BTN_EN_MSK_FE                              @ load the falling edge mask into r0 for clearing interrupt later on 
-    b       finish
+    b       finish                                               @ branch to the end
 
 finish:
     @ clear the interrupt and branch back to main
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_INTR2_OFFSET)          @ load register to clear interrupts
     str    r0, [r2]                                              @ store whatever mask have in r0 at this address, clearing the interrupt
     bl     watchdog_update                                       @ update watchdog                       
-    movs   r0, NEW_INTERRUPT
-    bl     check_for_interrupt
+    movs   r0, NEW_INTERRUPT                                     @ move 1 into r0 
+    bl     check_for_interrupt                                   @ set the interrupt_occured variable to 1 in the c program so that we know an interrupt has occured
     pop    {pc}                                                  @ go back to previous program execution
 
 

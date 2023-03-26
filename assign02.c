@@ -74,6 +74,10 @@ static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
             (uint32_t) (b);
 }
 
+static inline void led_set_blue() {
+    put_pixel(urgb_u32(0x00, 0x00, 0x7F));
+}
+
 
 //initialise watchdog timer
 void watchdog_init(){
@@ -86,74 +90,105 @@ void watchdog_init(){
     watchdog_update();
 }
 
+//Initialising variables
 //need to be global cuz we jump in and out of ASM
-int input = 0;
-int start_high = 0; // this is set to 1 after the first button release (rising edge) and should stay like this while the game is running
-int start_low = 0;
-int i = 0;
-int first[7];
-bool type = true;
-uint32_t low_interval, high_interval;
+int interrupt_occured = 0;               //to indicate that an interrupt needs to be dealt with   
+int start_high = 0;                      //set to 1 once first button press has been released (first rising edge interrupt)
+int start_low = 0;                       //set to 1 once second button press has occured (second falling edge interrupt)
+int i = 0;                               //used to track position in the array
+bool edge_type = true;                   //when set to true, the button release is being dealt with. when set to false, button pressed
+uint32_t low_interval, high_interval;    //to store the latest time segments
+uint32_t first_seq[7];                   //array to hold the first_seq input (4 dots/dashes, 3 spaces)
 
+//sets the start_high variable to 1 - to be called from ASM
 void set_start_high(int i){
     start_high = i;
 }
 
+//sets the start_low variable to 1 - to be called from ASM
 void set_start_low(int i){
     start_low = i;
 }
 
+//sets the interrupt flag variable to high - to be called from ASM
 void check_for_interrupt(int signal){
-    input = signal;
+    interrupt_occured = signal;
 }
 
+//stores the interval between button presses
 void store_interval_low(int interval){
     low_interval = interval;
 }
 
+//stores the interval the button has been pressed for
 void store_interval_high(int interval){
     high_interval = interval;
 }
 
-//function returns the value stored in r7, hasnt been tested with interval timer yet
-int32_t time_pressed();
-int32_t time_space();
-void reset();
+//gets the first sequence of inputs from gpio21, should track 4 button presses (7 places in the array, 4 presses, 3 spaces)
+//to use this function again, the variables start_high, start_low and edge_type might need to be reset, havnt tested that yet
+void get_first_seq(){
+    while (i < 7){
+        if (interrupt_occured){                     //if there was an interrupt (rising / falling edge)
+            if (edge_type && start_high == 1){      //if the button has just been released (rising edge) and we are passed the starting phase
+                i++;                                //increment the counter to move along in the array
+                first_seq[i-1] = high_interval;     //store the time interval in the array (dot / dash)
+                edge_type = false;                  //set edge_type so that next interrupt it will deal with a button press (falling edge)
+                interrupt_occured = 0;              //to indicate we have dealt with the interrupt occuring
+            } else {                            
+                if (start_low == 1){                //if the button has been pressed and we are past the starting phase
+                    i++;                            //increment the counter to move along in the array
+                    first_seq[i-1] = low_interval;  //store the time interval (spaces)
+                    edge_type = true;               //set the edge_type so that next interrupt will deal with a button released
+                    interrupt_occured = 0;          //to indicate we hae dealt with the interrupt occuring     
+                }
+            }
+        }
+    }
+    i = 0;
+}
+
+//takes an array of uint32_t values, times between rising and falling edge interrupts
+//converts the times between falling and rising edge to 1's (dashes) and 0's (dots)
+void binary_seq(uint32_t intervals[], char test[]){
+    int counter = 0;                                                //to increment through the array
+    for (int k = 0; k < 8; k++){                                    //to loop over the array of times
+        if ((k % 2) == 0){                                          //only deal with the button presses (times between falling and rising edge)
+            if (first_seq[k] <= 150000){                            //if button was pressed for less than 0.15 s
+            test[counter] = '0';                                    //it is a dot
+            } 
+            if (first_seq[k] <= 1000000 && first_seq[k] > 150000){  //if button was pressed for between 0.15 and 1 s 
+            test[counter] = '1';                                    //it is a dash
+            }
+            if (first_seq[k] > 1000000){                            //if the button was pressed for more than 1 s
+            test[counter] = '?';                                    //it is not recognised
+            }
+            counter++;                                              //move to the next place in the array
+        }  
+    }
+}
 
 // Main entry point of the application
 int main() {
-    stdio_init_all(); // Initialise all basic IO
-    //watchdog_init(); // Initialise watchdog timer
-    main_asm(); // Initialise pins and interrupt
+    //initialising
+    stdio_init_all(); 
+    PIO pio = pio0;
+    uint offset = pio_add_program(pio, &ws2812_program);
+    ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
+
+    //watchdog_init(); // initialise watchdog timer
+    main_asm(); // initialise pins and interrupt
     welcomeMessage(); // print welcome message
 
-    uint32_t starter = 0;
+    led_set_blue(); // to indicate that no game is in play 
 
-    while (i < 7){
-        //set timer for 2 seconds, loop until that runs out, then pass the sequence to the game
-        if (input){ //if there was an interrupt
-            if (type && start_high == 1){
-                i++;
-                first[i-1] = high_interval;
-                type = false;
-                input = 0;
-            } else {
-                if (start_low == 1){
-                    i++;
-                    first[i-1] = low_interval;
-                    type = true;  
-                    input = 0; 
-                }
-                 
-            }
-            
-        }
-        
-    }
-    printf("made it past !\n");
-    printf("starter: %d", starter);
+    get_first_seq(); //get the first sequence of inputs, this will be the player choosing a level
     
-    while (1){
+    char first_code[4]; //char array to hold 0's and 1's for dots and dashes
+    binary_seq(first_seq, first_code); //convert the sequence of uint32_t values into 0's and 1's
+    
+
+    while (1){ //to keep program running so i can pause debugger before program quits
 
     };
 
