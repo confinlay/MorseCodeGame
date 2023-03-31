@@ -61,7 +61,7 @@ main_asm:
 .thumb_func
 gpio_isr:
     push   {lr} 
-    bl      init_alarm                                           @reset alarm timer
+
     @bl     watchdog_update                                      @update watchdog
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_PROC0_INTS2_OFFSET)    @ load i/o register memory location 
     ldr    r1, [r2]                                              @ load value into r2 to check which interrupt was triggered 
@@ -87,10 +87,12 @@ mid_pressed:
     movs    r0, 1                                                @ move 1 to r0 so that we can set the start_low value in the c program
     bl      set_start_low                                        @ set the start_low value to 1 in the c program to indicate we can start recording the time intervals
     ldr     r0, =GPIO_BTN_EN_MSK_FE                              @ load the falling edge mask into r0 for clearing interrupt later on 
+    movs    r7, #1                                               @ set r7 to 1 t o indicate that the button is still being pressed
     b       finish                                               @ branch to the end
 
  @ deal with button released
 mid_released: 
+    bl      init_alarm                                           @reset alarm timer
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r6, r1                                               @ move this to r6 (where we store the rising edge time snapshot)
@@ -99,6 +101,7 @@ mid_released:
     movs    r0, 1                                                @ move 1 to r0 so that we can the the start_high value in the c program
     bl      set_start_high                                       @ set the start_high value to 1 in the c program to inidicate that we can start recording the time intervals
     ldr     r0, =GPIO_BTN_EN_MSK_RE                              @ load the rising edge mask into r0 for clearing interrupt later on 
+    movs    r7, #0                                               @ set r7 to 0 to indicate that the button has been released 
     b       finish                                               @ branch to the end
 
 first_iteration:
@@ -205,11 +208,12 @@ alarm_isr:
     movs    r0, #1                                  @ Load 1 into the regster for use in clearing timer interupt
     ldr     r1, =(TIMER_BASE + TIMER_INTR_OFFSET)   @ Load the adress for the TIMER raw interrupts register.  
     str     r0, [r1]                                @ Set the interrupt raw register to 1 to clear timer interrupts                
-    @dont reset the alarm yet alarm will be set one level started
+    @dont reset the alarm yet alarm will be set once level started
+    cmp     r0, r7                                  @ R7 will be high if button is still being pressed 
+    beq     button_still_pressed                    @ if button still pressed then dont handle interrupt
+    bl      handle_input 
 
-    bl      handle_input
-
-
+button_still_pressed:
     pop     {pc}
     
 
