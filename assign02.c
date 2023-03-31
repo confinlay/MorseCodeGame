@@ -133,6 +133,7 @@ void store_interval_high(int interval){
     high_interval = interval;
 }
 
+
 //gets the first sequence of inputs from gpio21, should track 4 button presses (7 places in the array, 4 presses, 3 spaces)
 //to use this function again, the variables start_high, start_low and edge_type might need to be reset, havnt tested that yet
 void get_first_seq(){
@@ -176,19 +177,28 @@ void binary_seq(uint32_t intervals[], char test[]){
     }
 }
 
+//start handling the arm input array in c
+//called after two second no button pressing alarm 
+void handle_input(){
+    printf("Ready to handle the arm input");
+
+}
+
 // Main entry point of the application
 int main() {
     //initialising
     stdio_init_all(); 
-    PIO pio = pio0;
-    uint offset = pio_add_program(pio, &ws2812_program);
-    ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
+    //////////PIO pio = pio0;
+    //////////uint offset = pio_add_program(pio, &ws2812_program);
+    //////////ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
 
     //watchdog_init(); // initialise watchdog timer
     main_asm(); // initialise pins and interrupt
-    welcomeMessage(); // print welcome message
+    //////////welcomeMessage(); // print welcome message
+    while (1){ //to keep program running so i can pause debugger before program quits
 
-    led_set_blue(); // to indicate that no game is in play 
+    };
+    //////////led_set_blue(); // to indicate that no game is in play 
 
     get_first_seq(); //get the first sequence of inputs, this will be the player choosing a level
     

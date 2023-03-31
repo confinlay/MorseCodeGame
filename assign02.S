@@ -15,6 +15,7 @@
 .global check_for_interrupt                                     @function declaration
 .align 4                                                        @ Specify code alignment
 
+.equ DFLT_ALARM_TIME, 2000000                                @ Specify the default alarm timeout @ 2 sec
 
 .equ GPIO_BTN_EN_MSK_FE, 0x00400000                          @ bit22 - when button is pressed, falling edge
 .equ GPIO_BTN_EN_MSK_RE, 0x00800000                          @ bit23 - when button is released, rising edge
@@ -48,6 +49,8 @@ main_asm:
    bl      init_gpio_led                                         @ initialise the led pin
    bl      install_gpio_interrupt                                @ install the gpio interrupt on pin 21
    bl      init_button_21                                        @ initialise the button 21 pin
+   bl      alrm_isr_installer                                    @ Install the Alarm ISR Handler into the IVT 
+
    movs    r5, 0                                                 @ intialising regs
    movs    r6, 0                                                 @ intialising regs
    movs    r4, 0                                                 @ intialising regs
@@ -58,6 +61,7 @@ main_asm:
 .thumb_func
 gpio_isr:
     push   {lr} 
+    bl      init_alarm                                           @reset alarm timer
     @bl     watchdog_update                                      @update watchdog
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_PROC0_INTS2_OFFSET)    @ load i/o register memory location 
     ldr    r1, [r2]                                              @ load value into r2 to check which interrupt was triggered 
@@ -71,7 +75,8 @@ gpio_isr:
     beq    mid_pressed                                           @ if middle button was pressed
  
     @ deal with button pressed
-mid_pressed:
+mid_pressed: 
+
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r5, r1                                               @ move this to r5 (where we store the falling edge time snapshot)
@@ -85,7 +90,7 @@ mid_pressed:
     b       finish                                               @ branch to the end
 
  @ deal with button released
-mid_released:
+mid_released: 
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r6, r1                                               @ move this to r6 (where we store the rising edge time snapshot)
@@ -104,6 +109,7 @@ finish:
     @ clear the interrupt and branch back to main
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_INTR2_OFFSET)          @ load register to clear interrupts
     str    r0, [r2]                                              @ store whatever mask have in r0 at this address, clearing the interrupt
+    //bl     init_alarm                                          @ reset the alarm timer
     bl     watchdog_update                                       @ update watchdog                       
     movs   r0, NEW_INTERRUPT                                     @ move 1 into r0 
     bl     check_for_interrupt                                   @ set the interrupt_occured variable to 1 in the c program so that we know an interrupt has occured
@@ -148,6 +154,66 @@ init_button_21:
     movs    r0, #GPIO_BTN_EN
     bl      asm_gpio_set_irq1
     pop     {pc}                                                 @ pop the program counter to return to where we were before
+
+/////////////////////// ALARM TIMER CODE ///////////////////////////
+alrm_isr_installer:
+    @install the Alarm ISR Handler into the Alarm0 slot in the IVT
+    ldr     r0, =(PPB_BASE + M0PLUS_VTOR_OFFSET)    @ Load in the location where the IVT address is stored in the hardware registers
+    ldr     r1, [r0]                                @ Load in the adress of the Interrupt vector table
+    ldr     r0, =ALRM_ISR_OFFSET                    @ Load in the Alarm ISR offset for the IVT
+    adds    r0, r1                                  @ Add the Alarm ISR offset to the IVT adress to get the adress of the Alarm ISR
+    ldr     r2, =alarm_isr                          @ Load in the adress of our Alarm ISR Handler subroutine
+    str     r2, [r0]                                @ Store the address of our Alarm ISR Handler subroutine at the Alarm ISR address in the IVT
+    
+    @Enabling Alarm IRQ0 step1, Clear the interrupt
+    ldr     r2, =(PPB_BASE+M0PLUS_NVIC_ICPR_OFFSET) @ Load in address of the NVIC Interrupt Clear Pending register
+    movs    r0, #1                                  
+    str     r0, [r2]                                @ Store 1 (replacing the 0) at bit 1 in the ICP Register to clear the interrupt
+    @Enabling Alarm IRQ0 step2, Set the interrupt
+    ldr     r2, =(PPB_BASE+M0PLUS_NVIC_ISER_OFFSET) @ Load in address of the NVIC Interrupt Set Pending register
+    movs    r0, #1
+    str     r0, [r2]                                @ Store 1 (replacing the 0) at bit 1 in the ISP Register to Set the interrupt
+
+    bx      lr                                      @ Return to the Link registry Adress
+
+@ Subroutine to set the alarm time and enable timer interupts
+init_alarm:
+    push    {lr}                                    @ Store the link register to the stack
+    
+    @Enables timer interupt
+    movs    r0, #1                                  @ Load 1 into the regster for use in enabling timer interupts
+    ldr     r1, =(TIMER_BASE + TIMER_INTE_OFFSET)   @ Load the adress for the timer interrupt enable register    
+    str     r0, [r1]                                @ Set the interrupt enable register to 1 to enable timer interrupts
+
+    @Reads in current time and adds time delay, i.e determines the alarm time
+    ldr     r1, =(TIMER_BASE + TIMER_TIMELR_OFFSET) @ Load in the address for the lower 32 bits of the timer regisiter
+    ldr     r0, [r1]                                @ Load the timer count from the timer register
+    ldr     r1, =DFLT_ALARM_TIME                    @ Set the default ALarm Time as 1000000 microseconds, 1 second
+    adds    r0, r0, r1                             @ Add the current time delay to the current timer count
+
+    @Sets the Alarm time in the Alarm control reg
+    ldr     r1, =(TIMER_BASE + TIMER_ALARM0_OFFSET) @ Load in the address for the ALARM0 control register
+    str     r0, [r1]                                @ Store the new alarm time to the Control register
+
+    pop     {pc}                                    @ Pop the link register from the stack to the program counter
+
+.thumb_func
+alarm_isr:
+    push    {lr}                                    @ Store the link register to the stack
+   
+    @clears the timer interrupt 
+    movs    r0, #1                                  @ Load 1 into the regster for use in clearing timer interupt
+    ldr     r1, =(TIMER_BASE + TIMER_INTR_OFFSET)   @ Load the adress for the TIMER raw interrupts register.  
+    str     r0, [r1]                                @ Set the interrupt raw register to 1 to clear timer interrupts                
+    @dont reset the alarm yet alarm will be set one level started
+
+    bl      handle_input
+
+
+    pop     {pc}
+    
+
+ 
 
 
 @ Set data alignment
