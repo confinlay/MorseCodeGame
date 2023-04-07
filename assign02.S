@@ -15,7 +15,7 @@
 .global check_for_interrupt                                     @function declaration
 .align 4                                                        @ Specify code alignment
 
-.equ DFLT_ALARM_TIME, 2000000                                @ Specify the default alarm timeout @ 2 sec
+.equ DFLT_ALARM_TIME, 1000000                                @ Specify the default alarm timeout @ 2 sec
 
 .equ GPIO_BTN_EN_MSK_FE, 0x00400000                          @ bit22 - when button is pressed, falling edge
 .equ GPIO_BTN_EN_MSK_RE, 0x00800000                          @ bit23 - when button is released, rising edge
@@ -93,6 +93,7 @@ mid_pressed:
  @ deal with button released
 mid_released: 
     bl      init_alarm                                           @reset alarm timer
+    movs    r4, #0                                               @ Move zero into reg 4 to reset alarm timer counter
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r6, r1                                               @ move this to r6 (where we store the rising edge time snapshot)
@@ -182,7 +183,7 @@ alrm_isr_installer:
 @ Subroutine to set the alarm time and enable timer interupts
 init_alarm:
     push    {lr}                                    @ Store the link register to the stack
-    
+    @bl      handle_twosec_c 
     @Enables timer interupt
     movs    r0, #1                                  @ Load 1 into the regster for use in enabling timer interupts
     ldr     r1, =(TIMER_BASE + TIMER_INTE_OFFSET)   @ Load the adress for the timer interrupt enable register    
@@ -192,7 +193,7 @@ init_alarm:
     ldr     r1, =(TIMER_BASE + TIMER_TIMELR_OFFSET) @ Load in the address for the lower 32 bits of the timer regisiter
     ldr     r0, [r1]                                @ Load the timer count from the timer register
     ldr     r1, =DFLT_ALARM_TIME                    @ Set the default ALarm Time as 1000000 microseconds, 1 second
-    adds    r0, r0, r1                             @ Add the current time delay to the current timer count
+    adds    r0, r0, r1                              @ Add the current time delay to the current timer count
 
     @Sets the Alarm time in the Alarm control reg
     ldr     r1, =(TIMER_BASE + TIMER_ALARM0_OFFSET) @ Load in the address for the ALARM0 control register
@@ -208,16 +209,30 @@ alarm_isr:
     movs    r0, #1                                  @ Load 1 into the regster for use in clearing timer interupt
     ldr     r1, =(TIMER_BASE + TIMER_INTR_OFFSET)   @ Load the adress for the TIMER raw interrupts register.  
     str     r0, [r1]                                @ Set the interrupt raw register to 1 to clear timer interrupts                
-    @dont reset the alarm yet alarm will be set once level started
+    
     cmp     r0, r7                                  @ R7 will be high if button is still being pressed 
     beq     button_still_pressed                    @ if button still pressed then dont handle interrupt
-    bl      handle_input 
+    adds    r4, r4, r0                              @ Add 1 to increment the alarm counter
+    cmp     r4, r0                                  @ check if the alarm has occured once
+    beq     handle_onesec_arm                       @ if so the handle the one second alarm
+    cmp     r4, r0 
+    bne     handle_twosec_arm                       @ if not then handle the two second alarm
 
 button_still_pressed:
     pop     {pc}
-    
 
- 
+handle_onesec_arm:                    
+    bl      handle_onesec_c                         @ call c function which handles spaces
+    b       done                                    @ branch to done
+handle_twosec_arm:                    
+    movs    r7, #1                                  @ Set r7 to high to prevent the C fnctions being called, this will be reset to zero when the button is pr
+    movs    r4, #0                                  @ rest alarm counte to 0 
+    bl      handle_twosec_c                         @ call c function which handles user input
+    b       done                                    @ branch to done
+done:  
+      
+    bl      init_alarm                              @ re-initialise the alarm 
+    pop     {pc}
 
 
 @ Set data alignment

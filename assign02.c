@@ -179,8 +179,13 @@ void binary_seq(uint32_t intervals[], char test[]){
 
 //start handling the arm input array in c
 //called after two second no button pressing alarm 
-void handle_input(){
-    printf("Ready to handle the arm input");
+void handle_onesec_c(){
+    printf("input a space here");
+
+}
+
+void handle_twosec_c(){
+    printf("Handle user input now ");
 
 }
 
