@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
 
 #define MAXSIZE 100
 
@@ -18,7 +19,7 @@ int main() {
         // Use the current microsecond count to seed the random number generator
     srand(time(NULL));
 
-    char* string_morse = "-.-. --- -. --- .-. ";    // test string (must end with a space)
+    char* string_morse = "----- .-- ...- -..--. -.-- ";    // test string (must end with a space)
 
     //char x = randomChar();
     char* string_converted = convertMorse(string_morse);
@@ -54,13 +55,13 @@ int main() {
 //     // Return character for checking later
 //     return random_char;
 
-// }
+//}
 
-// Function to convert an inputed word in morse code into a regular string
 char* convertMorse(char* word){
     char* converted = (char*)malloc(MAXSIZE);                           // allocate memory space for output string
-    int converted_index = 0, word_index = 0, letter_index = 0;                  // initiliase index counters to 0
-    char letter[MAXSIZE] = " ";                                               // declare char array to temporarily store each letter
+    int converted_index = 0, word_index = 0, letter_index = 0;          // initiliase index counters to 0
+    char letter[MAXSIZE] = " ";                                         // declare char array to temporarily store each letter
+    bool found = false;
 
     while(word[word_index] != '\0'){                                    // while there are still more code signals to read in
         if(word[word_index] == ' ')  {                                  // if we read in a space, then we have finished a letter
@@ -68,6 +69,7 @@ char* convertMorse(char* word){
             letter[letter_index] = '\0';                                // null-terminate string containing morse code for the letter
             for (int i = 0; i < 35; i++){                               // for each letter in the alphabet
                 if (strcmp(letter,morseCode[i]) == 0){                  // check if the morse code produced so far is equal to a letter in the alphabet
+                    found = true;                                       // set found to true
                     if(i < 10)
                         converted[converted_index++] = i + '0';         // add number to output if it is and post-increment converted_index
                     else
@@ -75,10 +77,14 @@ char* convertMorse(char* word){
                 }               
                 letter_index = 0;                                       // start new letter
             }
+            if(!found){                                                 // if no letter found
+                converted[converted_index++] = '?';                     // set letter to ? for unknown        
+            }
+            found = false;                                              // set found to false regardless
         }    
                                                      
         letter[letter_index++] = word[word_index++];                    // either way, read in another characted from the input, post incrementing both char arrays
     }
-    converted[converted_index] = '\0';                                  // null-terminate output
+    converted[converted_index-1] = '\0';                                // null-terminate output (removing trailing question mark)
     return converted;                       
 }
