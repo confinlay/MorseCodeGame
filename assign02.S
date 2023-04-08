@@ -12,7 +12,9 @@
 .global set_start_high                                          @function declaration
 .global set_start_low                                           @function declaration
 .global reset                                                   @function declaration
+.global reset_input_buffer
 .global check_for_interrupt                                     @function declaration
+.global init_alarm
 .align 4                                                        @ Specify code alignment
 
 .equ DFLT_ALARM_TIME, 1000000                                @ Specify the default alarm timeout @ 2 sec
@@ -219,6 +221,11 @@ alarm_isr:
     bne     handle_twosec_arm                       @ if not then handle the two second alarm
 
 button_still_pressed:
+    pop     {pc}
+    
+reset_input_buffer:
+    push    {lr}
+    movs    r6, #0;
     pop     {pc}
 
 handle_onesec_arm:                    
