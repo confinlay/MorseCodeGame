@@ -86,6 +86,24 @@ static inline void led_set_blue() {
     put_pixel(urgb_u32(0x00, 0x00, 0x7F));
 }
 
+static inline void led_set_red() {
+    put_pixel(urgb_u32(0x7F, 0x00, 0x00));
+}
+
+static inline void led_set_orange() {
+    put_pixel(urgb_u32(0xFF, 0x8C, 0x00));
+}
+static inline void led_set_green() {
+    put_pixel(urgb_u32(0x00, 0xFF, 0x00));
+}
+static inline void led_set_off() {
+    put_pixel(urgb_u32(0x00, 0x00, 0x00));
+}
+static inline void led_set_yellow() {
+    put_pixel(urgb_u32(0xD7, 0xFF, 0x00));
+}
+
+
 
 //initialise watchdog timer
 void watchdog_init(){
@@ -214,8 +232,24 @@ char randomChar() {
 }
 
 int level_one() {
+
     //loop until the player completes the level or runs out of lives
     while (lives != 0 && score != 5){
+        //output the colour corresponding to the amount of lives yet
+        switch (lives) {
+        case 3: 
+            led_set_green();
+            break;
+        case 2:
+            led_set_orange();
+            break;
+        case 1:
+            led_set_yellow();
+            break;
+        default:
+            break;
+        }
+
         char character = randomChar();
         
         // call conors function to output that char and its morse code
@@ -259,8 +293,10 @@ int level_one() {
     
 
     if (lives == 0){
+        led_set_red();
         return 1; //you lost
     } else {
+        led_set_yellow();
         return 0; //!! you won 
     }
 
@@ -270,17 +306,15 @@ int level_one() {
 int main() {
     //initialising
     stdio_init_all(); 
-    //////////PIO pio = pio0;
-    //////////uint offset = pio_add_program(pio, &ws2812_program);
-    //////////ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
+    PIO pio = pio0;
+    uint offset = pio_add_program(pio, &ws2812_program);
+    ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
 
     //watchdog_init(); // initialise watchdog timer
     main_asm(); // initialise pins and interrupt
-    //////////welcomeMessage(); // print welcome message
-    // while (1){ //to keep program running so i can pause debugger before program quits
-
-    // };
-    //////////led_set_blue(); // to indicate that no game is in play 
+    welcomeMessage(); // print welcome message
+    
+    led_set_blue(); // to indicate that no game is in play 
 
     int level = 0;
     level = level_one();
