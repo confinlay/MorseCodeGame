@@ -12,7 +12,9 @@
 .global set_start_high                                          @function declaration
 .global set_start_low                                           @function declaration
 .global reset                                                   @function declaration
+.global reset_input_buffer
 .global check_for_interrupt                                     @function declaration
+.global init_alarm
 .align 4                                                        @ Specify code alignment
 
 .equ DFLT_ALARM_TIME, 2000000                                @ Specify the default alarm timeout @ 2 sec
@@ -192,7 +194,7 @@ init_alarm:
     ldr     r1, =(TIMER_BASE + TIMER_TIMELR_OFFSET) @ Load in the address for the lower 32 bits of the timer regisiter
     ldr     r0, [r1]                                @ Load the timer count from the timer register
     ldr     r1, =DFLT_ALARM_TIME                    @ Set the default ALarm Time as 1000000 microseconds, 1 second
-    adds    r0, r0, r1                             @ Add the current time delay to the current timer count
+    adds    r0, r0, r1                              @ Add the current time delay to the current timer count
 
     @Sets the Alarm time in the Alarm control reg
     ldr     r1, =(TIMER_BASE + TIMER_ALARM0_OFFSET) @ Load in the address for the ALARM0 control register
@@ -216,6 +218,10 @@ alarm_isr:
 button_still_pressed:
     pop     {pc}
     
+reset_input_buffer:
+    push    {lr}
+    movs    r6, #0;
+    pop     {pc}
 
  
 
