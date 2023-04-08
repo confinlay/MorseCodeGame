@@ -249,6 +249,16 @@ void output_user_input(char character, char *morse){
 }
 //start handling the arm input array in c
 //called after two second no button pressing alarm 
+
+void handle_onesec_c(){
+    printf("input a space here");
+
+}
+
+void handle_twosec_c(){
+    printf("Handle user input now ");
+}
+
 void handle_input(){
     process_sequence = 1;
 }
@@ -417,6 +427,7 @@ int choose_level() {
     } else {
         return 0; //no level selected
     }
+
 
 }
 
