@@ -126,6 +126,7 @@ bool edge_type = true;                   //when set to true, the button release 
 uint32_t low_interval, high_interval;    //to store the latest time segments
 uint32_t time_intervals[100];                 //array to hold the time_intervals input (4 dots/dashes, 3 spaces)
 int process_sequence = 0;                //set to 1 when the 2 second alarm timer goes off, program knows to take the users input and process it
+int space_timer = 0;
 int lives = 3;                           //lives set to 3 at the start
 int score = 0;                           //score set to 0 at the start
 char character;                          //the character the user should input morse for
@@ -252,8 +253,7 @@ void output_user_input(char character, char *morse){
 //called after two second no button pressing alarm 
 
 void handle_onesec_c(){
-    printf("input a space here");
-
+    space_timer = 1;
 }
 //handle the user input
 void handle_twosec_c(){
@@ -354,7 +354,7 @@ int level_one_and_two(int choose_level) {
 
         char *user_input;                   //string (one char) to hold what the user has input in letters / numbers
         char *morse = morse_sequence;       //string to hold what the user has input in dots and dashes
-        user_input = convertMorse(morse);   //conver the dots and dashes to the letter / char
+        user_input = convertMorse(morse);   //convert the dots and dashes to the letter / char
 
         output_user_input(*user_input, morse); //output the users input
 
@@ -365,6 +365,7 @@ int level_one_and_two(int choose_level) {
             }
             repeat = 0; //set repeat to 0 so that we get a new character on the next iteration
         } else {
+            printf("%s : %c\n", user_input, character);
             lives--;        //didn't match so minus 1 life and get a new character (start while loop again)
             repeat = 1;     //set repeat to 1 since we need the user to attempt the same character again
         }
@@ -552,6 +553,6 @@ char* convertMorse(char* word){
                                                      
         letter[letter_index++] = word[word_index++];                    // either way, read in another characted from the input, post incrementing both char arrays
     }
-    converted[converted_index-1] = '\0';                                // null-terminate output (removing trailing question mark)
+    converted[converted_index] = '\0';                                // null-terminate output (removing trailing question mark)
     return converted;                       
 }
