@@ -17,7 +17,7 @@
 
 #define MAXSIZE 100
 
-char* morseCode[] = {".-", "-...", "-.-.", "-..", ".", "..-.",
+char* morseCode[] = {"-----", ".----", "..---","...--", "....--", ".....", "-....", "--...", "---..", "----.",".-", "-...", "-.-.", "-..", ".", "..-.",
     "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-",
     ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
 
@@ -388,9 +388,35 @@ void welcomeMessage() {
 }
 
 
+// Return a random character from 0-9 or A-Z when called
+char randomChar() {
+    char random_char;
 
+    // Use the current microsecond count to seed the random number generator
+    uint64_t seed = time_us_64();
+    srand(seed);
 
-// Function to convert an inputed word in morse code into a regular string (MUST END WITH A SPACE CHARACTER ' ')
+    // Generate a random number (0 - 9: numbers; 10 - 35: letters)
+    int random_num = rand() % 35;
+
+    // If 0 -> 9, return straight away
+    // Otherwise, convert the number to an uppercase letter and return the letter
+    if (random_num < 10) {
+        random_char = random_num + '0';
+    } else {
+        random_char = (random_num - 10) + 'A';
+    }
+    char* random_morse = morseCode[random_num];
+
+    // Print statements
+    printf("Character: %c | Morse code equivalent: %s", random_char, random_morse);
+
+    // Return character for checking later
+    return random_char;
+
+}
+
+// Function to convert an inputed word in morse code into a regular string
 char* convertMorse(char* word){
     if (word == NULL || word[0] == '\0'){
         return NULL;
@@ -411,9 +437,20 @@ char* convertMorse(char* word){
                     converted[converted_index++] = i + 'A'; // add letter to output if it is and post-increment converted_index               
                 letter_index = 0;                           // start new letter
             }
-        }                                                    
-        letter[letter_index++] = word[word_index++];        // either way, read in another characted from the input, post incrementing both char arrays
+        }    
+                                                     
+        letter[letter_index++] = word[word_index++];                    // either way, read in another characted from the input, post incrementing both char arrays
     }
-    converted[converted_index] = '\0';                      // null-terminate output
+    converted[converted_index] = '\0';                                  // null-terminate output
     return converted;                       
+}
+
+
+
+char outputChallenge1(){
+    char random = randomChar();
+    char* randomMorse = malloc(2*sizeof(char));
+    randomMorse[0] = random;
+    randomMorse[1] = '\0';
+    d
 }
