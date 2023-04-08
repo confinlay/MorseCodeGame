@@ -86,6 +86,24 @@ static inline void led_set_blue() {
     put_pixel(urgb_u32(0x00, 0x00, 0x7F));
 }
 
+static inline void led_set_red() {
+    put_pixel(urgb_u32(0x7F, 0x00, 0x00));
+}
+
+static inline void led_set_orange() {
+    put_pixel(urgb_u32(0xFF, 0x8C, 0x00));
+}
+static inline void led_set_green() {
+    put_pixel(urgb_u32(0x00, 0xFF, 0x00));
+}
+static inline void led_set_off() {
+    put_pixel(urgb_u32(0x00, 0x00, 0x00));
+}
+static inline void led_set_yellow() {
+    put_pixel(urgb_u32(0xD7, 0xFF, 0x00));
+}
+
+
 
 //initialise watchdog timer
 void watchdog_init(){
@@ -104,9 +122,14 @@ int interrupt_occured = 0;               //to indicate that an interrupt needs t
 int start_high = 0;                      //set to 1 once first button press has been released (first rising edge interrupt)
 int start_low = 0;                       //set to 1 once second button press has occured (second falling edge interrupt)
 int i = 0;                               //used to track position in the array
+int k = 0;                               //used to track place in first_seq array - if inputting the first char it should = 0, any char after it should = 1
 bool edge_type = true;                   //when set to true, the button release is being dealt with. when set to false, button pressed
 uint32_t low_interval, high_interval;    //to store the latest time segments
-uint32_t first_seq[7];                   //array to hold the first_seq input (4 dots/dashes, 3 spaces)
+uint32_t time_intervals[100];                 //array to hold the time_intervals input (4 dots/dashes, 3 spaces)
+int process_sequence = 0;                //set to 1 when the 2 second alarm timer goes off, program knows to take the users input and process it
+int lives = 3;                           //lives set to 3 at the start
+int score = 0;                           //score set to 0 at the start
+
 
 //sets the start_high variable to 1 - to be called from ASM
 void set_start_high(int i){
@@ -133,54 +156,149 @@ void store_interval_high(int interval){
     high_interval = interval;
 }
 
-
-//gets the first sequence of inputs from gpio21, should track 4 button presses (7 places in the array, 4 presses, 3 spaces)
-//to use this function again, the variables start_high, start_low and edge_type might need to be reset, havnt tested that yet
-void get_first_seq(){
-    while (i < 7){
-        if (interrupt_occured){                     //if there was an interrupt (rising / falling edge)
-            if (edge_type && start_high == 1){      //if the button has just been released (rising edge) and we are passed the starting phase
-                i++;                                //increment the counter to move along in the array
-                first_seq[i-1] = high_interval;     //store the time interval in the array (dot / dash)
-                edge_type = false;                  //set edge_type so that next interrupt it will deal with a button press (falling edge)
-                interrupt_occured = 0;              //to indicate we have dealt with the interrupt occuring
-            } else {                            
-                if (start_low == 1){                //if the button has been pressed and we are past the starting phase
-                    i++;                            //increment the counter to move along in the array
-                    first_seq[i-1] = low_interval;  //store the time interval (spaces)
-                    edge_type = true;               //set the edge_type so that next interrupt will deal with a button released
-                    interrupt_occured = 0;          //to indicate we hae dealt with the interrupt occuring     
-                }
-            }
-        }
+//used to put a null terminator on the end of the string of morse code so it can be used in comparison function
+void null_terminate_string(char *morse_string){
+    int i = 0; //counter
+    
+    //find the end of the morse code
+    while (morse_string[i] == '.' || morse_string[i] == '-'|| morse_string[i] == ' '){
+        i++;  
     }
-    i = 0;
+
+    morse_string[i] = ' '; //space so that it is compatible with ConvertMorse function
+    morse_string[i+1] = '\0'; //null terminate
 }
 
 //takes an array of uint32_t values, times between rising and falling edge interrupts
 //converts the times between falling and rising edge to 1's (dashes) and 0's (dots)
-void binary_seq(uint32_t intervals[], char test[]){
-    int counter = 0;                                                //to increment through the array
-    for (int k = 0; k < 8; k++){                                    //to loop over the array of times
-        if ((k % 2) == 0){                                          //only deal with the button presses (times between falling and rising edge)
-            if (first_seq[k] <= 150000){                            //if button was pressed for less than 0.15 s
-            test[counter] = '.';                                    //it is a dot
-            } 
-            if (first_seq[k] <= 1000000 && first_seq[k] > 150000){  //if button was pressed for between 0.15 and 1 s 
-            test[counter] = '-';                                    //it is a dash
-            }
-            if (first_seq[k] > 1000000){                            //if the button was pressed for more than 1 s
-            test[counter] = '?';                                    //it is not recognised
-            }
-            counter++;                                              //move to the next place in the array
-        }  
+void convert_to_morse(uint32_t intervals[], char *morse_string, int k){
+    int counter = 0; 
+    while (time_intervals[k] != 0){                                  //to loop over the array of times
+        if (time_intervals[k] <= 150000){                            //if button was pressed for less than 0.15 s
+        morse_string[counter] = '.';                            //it is a dot
+        } 
+        if (time_intervals[k] <= 1000000 && time_intervals[k] > 150000){  //if button was pressed for between 0.15 and 1 s 
+        morse_string[counter] = '-';                            //it is a dash
+        }
+        if (time_intervals[k] > 1000000){                            //if the button was pressed for more than 1 s
+        morse_string[counter] = ' ';                            //it is not recognised
+        }
+        counter++;                                              //move to the next place in the array 
+        k = k + 2;                                              //move two places in the time_intervals array
     }
+    null_terminate_string(morse_string);
 }
+
+
+void handle_gpio_interrupt() {
+    if (edge_type && start_high == 1){      //if the button has just been released (rising edge) and we are passed the starting phase
+        i++;                                //increment the counter to move along in the array
+        time_intervals[i-1] = high_interval;     //store the time interval in the array (dot / dash)
+        edge_type = false;                  //set edge_type so that next interrupt it will deal with a button press (falling edge)
+        interrupt_occured = 0;              //to indicate we have dealt with the interrupt occuring
+    } else {                            
+        if (start_low == 1){  //if the button has been pressed and we are past the starting phase
+            i++;                            //increment the counter to move along in the array
+            time_intervals[i-1] = low_interval;  //store the time interval (spaces)
+            edge_type = true;               //set the edge_type so that next interrupt will deal with a button released
+            interrupt_occured = 0;          //to indicate we hae dealt with the interrupt occuring  
+        } 
+      }
+}
+
 
 //start handling the arm input array in c
 //called after two second no button pressing alarm 
 void handle_input(){
     printf("Ready to handle the arm input");
+    process_sequence = 1;
+}
+// Return a random character from 0-9 or A-Z when called
+char randomChar() {
+    // Use the current microsecond count to seed the random number generator
+    uint64_t seed = time_us_64();
+    srand(seed);
+
+    // Generate a random number (0 - 9: numbers; 10 - 35: letters)
+    int random_num = rand() % 35;
+
+    // If 0 -> 9, return straight away
+    // Otherwise, convert the number to an uppercase letter and return the letter
+    if (random_num < 10) {
+        return random_num + '0';
+    } else {
+        return (random_num - 10) + 'A';
+    }
+}
+
+int level_one() {
+
+    //loop until the player completes the level or runs out of lives
+    while (lives != 0 && score != 5){
+        //output the colour corresponding to the amount of lives yet
+        switch (lives) {
+        case 3: 
+            led_set_green();
+            break;
+        case 2:
+            led_set_orange();
+            break;
+        case 1:
+            led_set_yellow();
+            break;
+        default:
+            break;
+        }
+
+        char character = randomChar();
+        
+        // call conors function to output that char and its morse code
+
+        i = 0;                              //global counter for morse code inputs 
+        while (process_sequence != 1){      //until the alarm goes off, accept inputs
+            if (interrupt_occured){         //input occured
+                handle_gpio_interrupt();    //deal with new input  
+            }
+        }
+        process_sequence = 0;               //set to zero so we pause at the while loop the next iteration
+
+        //alarm has gone, convert the sequence of time intervals to morse code
+        char morse_sequence[7];                          //only 7 chars since all letters / nums can be represented by 5 dots / dashes
+        convert_to_morse(time_intervals, morse_sequence, k);  //convert the sequence to morse code
+
+        char *user_input;                   //string (one char) to hold what the user has input in letters / numbers
+        char *morse = morse_sequence;       //string to hold what the user has input in dots and dashes
+        user_input = convertMorse(morse);   //conver the dots and dashes to the letter / char
+
+        if (user_input[0] == character){ 
+            score++;        //add one to the score and get a new character (start while loop again)
+        } else {
+            lives--;        //didn't match so minus 1 life and get a new character (start while loop again)
+        }
+
+        // call conors function to display the users input and see if it matches to the correct character
+        
+        //clear the time_intervals array
+        int x = 0;
+        while(time_intervals[x] != 0){
+            time_intervals[x] = 0;
+            x++;
+        }
+        
+        //reset variables for the next round (next iteration of the while loop)
+        start_high = 0;                                    //to not accept the first interrupt 
+        k = 1;                                             //for use in function convert_to_morse. odd time intervals will be used after first round
+        memset(morse_sequence, 0, sizeof(morse_sequence)); //clear the string for next round
+    }
+    
+
+    if (lives == 0){
+        led_set_red();
+        return 1; //you lost
+    } else {
+        led_set_yellow();
+        return 0; //!! you won 
+    }
 
 }
 
@@ -188,22 +306,23 @@ void handle_input(){
 int main() {
     //initialising
     stdio_init_all(); 
-    //////////PIO pio = pio0;
-    //////////uint offset = pio_add_program(pio, &ws2812_program);
-    //////////ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
+    PIO pio = pio0;
+    uint offset = pio_add_program(pio, &ws2812_program);
+    ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
 
     //watchdog_init(); // initialise watchdog timer
     main_asm(); // initialise pins and interrupt
-    //////////welcomeMessage(); // print welcome message
-    while (1){ //to keep program running so i can pause debugger before program quits
+    welcomeMessage(); // print welcome message
+    
+    led_set_blue(); // to indicate that no game is in play 
 
-    };
-    //////////led_set_blue(); // to indicate that no game is in play 
+    int level = 0;
+    level = level_one();
 
-    get_first_seq(); //get the first sequence of inputs, this will be the player choosing a level
+    //get_time_intervals(); //get the first sequence of inputs, this will be the player choosing a level
     
     char first_code[4]; //char array to hold 0's and 1's for dots and dashes
-    binary_seq(first_seq, first_code); //convert the sequence of uint32_t values into 0's and 1's
+    //convert_to_morse(time_intervals, first_code); //convert the sequence of uint32_t values into 0's and 1's
     
 
     while (1){ //to keep program running so i can pause debugger before program quits
@@ -269,28 +388,18 @@ void welcomeMessage() {
 }
 
 
-// Return a random character from 0-9 or A-Z when called
-char randomChar() {
-    // Use the current microsecond count to seed the random number generator
-    uint64_t seed = time_us_64();
-    srand(seed);
 
-    // Generate a random number (0 - 9: numbers; 10 - 35: letters)
-    int random_num = rand() % 35;
-
-    // If 0 -> 9, return straight away
-    // Otherwise, convert the number to an uppercase letter and return the letter
-    if (random_num < 10) {
-        return random_num + '0';
-    } else {
-        return (random_num - 10) + 'A';
-    }
-}
 
 // Function to convert an inputed word in morse code into a regular string (MUST END WITH A SPACE CHARACTER ' ')
 char* convertMorse(char* word){
+    if (word == NULL || word[0] == '\0'){
+        return NULL;
+    }
+
     char* converted = (char*)malloc(MAXSIZE);               // allocate memory space for output string
-    int converted_index, word_index, letter_index = 0;      // initiliase index counters to 0
+    int converted_index = 0;
+    int word_index = 0;
+    int letter_index = 0;                                   // initiliase index counters to 0
     char letter[MAXSIZE];                                   // declare char array to temporarily store each letter
 
     while(word[word_index] != '\0'){                        // while there are still more code signals to read in
