@@ -22,6 +22,27 @@ char* morseCode[] = {"-----", ".----", "..---","...--", "....--", ".....", "-...
     "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-",
     ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
 
+char* words[] = {
+    "ace", "apple", "blue", "bunny", "cape",
+    "chair", "daisy", "dance", "eagle", "ember",
+    "frost", "fudge", "glide", "grape", "honey",
+    "icicle", "jazz", "jelly", "kangaroo", "kitten",
+    "lemon", "lucky", "marble", "mango", "navy",
+    "ocean", "opal", "pepper", "piano", "quilt",
+    "rabbit", "river", "sunny", "swirl", "tiger",
+    "turtle", "umbrella", "unique", "violet", "wave",
+    "wheat", "whisk", "yellow", "lunch", "zebra",
+    "acorn", "badger", "banana", "butter", "cactus",
+    "coffee", "comet", "dagger", "dragon", "flamingo",
+    "gorilla", "guitar", "hippo", "hockey", "jungle",
+    "ketchup", "kiwi", "koala", "laptop", "lizard",
+    "mascot", "monkey", "mountain", "mustard", "necklace",
+    "octopus", "penguin", "pumpkin", "rainbow", "robot",
+    "sailor", "seagull", "shark", "snowman", "squirrel",
+    "treasure", "unicorn", "volcano", "watermelon", "whale",
+    "wizard", "xylophone", "yak", "yellowstone", "zeppelin"
+};
+
 // Must declare the main assembly entry point before use.
 void main_asm();
 // Initialise a GPIO pin – see SDK for detail on gpio_init()
@@ -124,7 +145,7 @@ int i = 0;                               //used to track position in the array
 int k = 0;                               //used to track place in first_seq array - if inputting the first char it should = 0, any char after it should = 1
 bool edge_type = true;                   //when set to true, the button release is being dealt with. when set to false, button pressed
 uint32_t low_interval, high_interval;    //to store the latest time segments
-uint32_t time_intervals[100];                 //array to hold the time_intervals input (4 dots/dashes, 3 spaces)
+uint32_t time_intervals[100];                 //array to hold the time_intervals input (4 dots/dashes, 3  s)
 int process_sequence = 0;                //set to 1 when the 2 second alarm timer goes off, program knows to take the users input and process it
 int space_timer = 0;
 int lives = 3;                           //lives set to 3 at the start
@@ -132,6 +153,7 @@ int score = 0;                           //score set to 0 at the start
 char character;                          //the character the user should input morse for
 int repeat = 0;                          //used in the levels to repeat the same character or generate another one based on if the user input the correct code
 int level_choice;                        //to decide which level to play
+char randomWord[8];
 
 //sets the start_high variable to 1 - to be called from ASM
 void set_start_high(int i){
@@ -243,20 +265,22 @@ char randomChar(int choose_level) {
 }
 
 
-void output_user_input(char character, char *morse){
+void output_user_input(char* input, char *morse){
     printf("|                                                                              |\n");
-    printf("|                        You input %s : %c                                    |\n", morse, character);
-    printf("|                                                                              |\n");
+    printf("|                        You input %s : %s                                    |\n", morse, input);
+    printf("|                                                                              |\n");          
     return;
 }
 //start handling the arm input array in c
 //called after two second no button pressing alarm 
 
 void handle_onesec_c(){
+    printf("one second has passed!\n");
     space_timer = 1;
 }
 //handle the user input
 void handle_twosec_c(){
+    printf("two seconds have passed!\n");
     process_sequence = 1;
 }
 
@@ -276,6 +300,28 @@ void print_level_two(){
     printf(".______________________________________________________________________________.\n");
     printf("|                                                                              |\n");
     printf("|                            Welcome to Level 2                                |\n");
+    printf("|                                                                              |\n");
+    printf(".______________________________________________________________________________.\n");
+    printf("|                                                                              |\n");
+    return;
+}
+
+//printing entry message level 3
+void print_level__three(){
+    printf(".______________________________________________________________________________.\n");
+    printf("|                                                                              |\n");
+    printf("|                            Welcome to Level 3                                |\n");
+    printf("|                                                                              |\n");
+    printf(".______________________________________________________________________________.\n");
+    printf("|                                                                              |\n");
+    return;
+}
+
+//printing entry message level 4
+void print_level_four(){
+    printf(".______________________________________________________________________________.\n");
+    printf("|                                                                              |\n");
+    printf("|                            Welcome to Level 4                                |\n");
     printf("|                                                                              |\n");
     printf(".______________________________________________________________________________.\n");
     printf("|                                                                              |\n");
@@ -356,14 +402,14 @@ int level_one_and_two(int choose_level) {
         char *morse = morse_sequence;       //string to hold what the user has input in dots and dashes
         user_input = convertMorse(morse);   //convert the dots and dashes to the letter / char
 
-        output_user_input(*user_input, morse); //output the users input
+        output_user_input(user_input, morse); //output the users input
 
         if (user_input[0] == character){  //if the users input is correct
             score++;        //add one to the score and get a new character (start while loop again)
             if (lives < 3){ //if we are not already on 3 lives, add another life
                 lives++;
+                repeat = 0; //set repeat to 0 so that we get a new character on the next iteration
             }
-            repeat = 0; //set repeat to 0 so that we get a new character on the next iteration
         } else {
             printf("%s : %c\n", user_input, character);
             lives--;        //didn't match so minus 1 life and get a new character (start while loop again)
@@ -398,6 +444,102 @@ int level_one_and_two(int choose_level) {
     }
 
 }
+int level_three_and_four(int choose_level){
+    int randomNumber;
+    int first = 1;
+    char *morse;
+    char morse_sequence[7];
+
+    if(choose_level == 1)
+        print_level__three();
+    else if(choose_level == 2)
+        print_level_four();
+    else 
+        printf("error in choosing level!\n");
+    
+    while(lives != 0 && score != 5){
+        switch (lives) {
+        case 3: 
+            led_set_green();
+            break;
+        case 2:
+            led_set_orange();
+            break;
+        case 1:
+            led_set_yellow();
+            break;
+        default:
+            break;
+        }
+
+        if (repeat == 1){ //if the user input the wrong sequence of morse code
+            printf("|                                Try again !                                   |\n");
+            printf("|                                                                              |\n");
+        } else{
+            uint64_t seed = time_us_64();
+            srand(seed);
+            randomNumber = rand() % 100;
+            strcpy(randomWord, words[randomNumber]);
+            printf("Your word is : %s\n", randomWord);
+        }
+        
+        i = 0;
+
+        while (process_sequence != 1){
+            while(space_timer != 1){
+                if(interrupt_occured)
+                    handle_gpio_interrupt();
+            }
+            space_timer = 0;
+            convert_to_morse(time_intervals, morse_sequence, k);
+            if (first)
+                morse = morse_sequence;
+            else 
+                strcat(morse, morse_sequence);
+            first = 0;
+        }
+        process_sequence = 0;
+
+        char *user_input = convertMorse(morse);
+
+        output_user_input(user_input, morse);
+
+        if(strcmp(user_input, randomWord) == 0){
+            score++;
+            if (lives < 3){
+                lives ++;
+                repeat = 0;
+            }
+        } else{
+            lives--;
+            repeat = 1;
+        }
+
+            clear_time_intervals();
+
+            start_high = 0;
+            k = 1;
+            memset(morse_sequence, 0, sizeof(morse_sequence));
+        }
+
+        if(lives == 0){
+            led_set_red();
+            printf("|                You have failed to complete the level :(                      |\n");
+            printf("|                                                                              |\n");
+            printf(".______________________________________________________________________________.\n");
+            lives = 3;
+            score = 0;
+            repeat = 0;
+            return 1;
+        } else {
+            led_set_yellow();
+            level_complete_message(level_choice);
+            lives = 3;
+            score = 0;
+            return 0;
+        }
+    }
+
 
 int choose_level() {
     while (process_sequence != 1){      //until the alarm goes off, accept inputs
@@ -457,9 +599,9 @@ int main() {
     }
 
     int level; //placeholder
-    level = level_one_and_two(level_choice);   //start whichever level the user chose
+    level = level_three_and_four(level_choice);   //start whichever level the user chose
     if (level == 0){ //if we passed level 1, go to level 2
-        level = level_one_and_two(level_choice);   //start whichever level the user chose
+        level = level_three_and_four(level_choice);   //start whichever level the user chose
     }
 
     while (1){ //to keep program running so i can pause debugger before program quits
@@ -553,6 +695,6 @@ char* convertMorse(char* word){
                                                      
         letter[letter_index++] = word[word_index++];                    // either way, read in another characted from the input, post incrementing both char arrays
     }
-    converted[converted_index] = '\0';                                // null-terminate output (removing trailing question mark)
+    converted[converted_index] = '\0';                                  // null-terminate output (removing trailing question mark)
     return converted;                       
 }
