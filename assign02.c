@@ -552,6 +552,6 @@ char* convertMorse(char* word){
                                                      
         letter[letter_index++] = word[word_index++];                    // either way, read in another characted from the input, post incrementing both char arrays
     }
-    converted[converted_index-1] = '\0';                                // null-terminate output (removing trailing question mark)
+    converted[converted_index] = '\0';                                // null-terminate output (removing trailing question mark)
     return converted;                       
 }
