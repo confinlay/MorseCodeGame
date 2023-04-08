@@ -20,7 +20,7 @@ int main() {
 
     char* string_morse = "-.-. --- -. --- .-. ";    // test string (must end with a space)
 
-    char x = randomChar();
+    //char x = randomChar();
     char* string_converted = convertMorse(string_morse);
 
     printf("Converted: %s" , string_converted);
@@ -29,32 +29,32 @@ int main() {
     return(0);
 }
 
-char randomChar() {
-    char random_char;
+// char randomChar() {
+//     char random_char;
 
-    // Use the current microsecond count to seed the random number generator
-    uint64_t seed = time_us_64();
-    srand(seed);
+//     // Use the current microsecond count to seed the random number generator
+//     uint64_t seed = time_us_64();
+//     srand(seed);
 
-    // Generate a random number (0 - 9: numbers; 10 - 35: letters)
-    int random_num = rand() % 35;
+//     // Generate a random number (0 - 9: numbers; 10 - 35: letters)
+//     int random_num = rand() % 35;
 
-    // If 0 -> 9, return straight away
-    // Otherwise, convert the number to an uppercase letter and return the letter
-    if (random_num < 10) {
-        random_char = random_num + '0';
-    } else {
-        random_char = (random_num - 10) + 'A';
-    }
-    char* random_morse = morseCode[random_num];
+//     // If 0 -> 9, return straight away
+//     // Otherwise, convert the number to an uppercase letter and return the letter
+//     if (random_num < 10) {
+//         random_char = random_num + '0';
+//     } else {
+//         random_char = (random_num - 10) + 'A';
+//     }
+//     char* random_morse = morseCode[random_num];
 
-    // Print statements
-    printf("Character: %c | Morse code equivalent: %s", random_char, random_morse);
+//     // Print statements
+//     printf("Character: %c | Morse code equivalent: %s", random_char, random_morse);
 
-    // Return character for checking later
-    return random_char;
+//     // Return character for checking later
+//     return random_char;
 
-}
+// }
 
 // Function to convert an inputed word in morse code into a regular string
 char* convertMorse(char* word){
