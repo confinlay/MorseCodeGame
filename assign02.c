@@ -206,15 +206,10 @@ void handle_gpio_interrupt() {
       }
 }
 
-
-//start handling the arm input array in c
-//called after two second no button pressing alarm 
-void handle_input(){
-    printf("Ready to handle the arm input");
-    process_sequence = 1;
-}
 // Return a random character from 0-9 or A-Z when called
 char randomChar() {
+    char random_char;
+
     // Use the current microsecond count to seed the random number generator
     uint64_t seed = time_us_64();
     srand(seed);
@@ -225,14 +220,38 @@ char randomChar() {
     // If 0 -> 9, return straight away
     // Otherwise, convert the number to an uppercase letter and return the letter
     if (random_num < 10) {
-        return random_num + '0';
+        random_char = random_num + '0';
     } else {
-        return (random_num - 10) + 'A';
+        random_char = (random_num - 10) + 'A';
     }
+    char* random_morse = morseCode[random_num];
+
+    // Print statements
+    printf("|                 Character: %c | Morse code equivalent: %s                  |\n", random_char, random_morse);
+    printf("|                                                                              |\n");
+
+
+    // Return character for checking later
+    return random_char;
+
+}
+
+//start handling the arm input array in c
+//called after two second no button pressing alarm 
+void handle_input(){
+    process_sequence = 1;
 }
 
 int level_one() {
+    printf(".______________________________________________________________________________.\n");
+    printf("|                                                                              |\n");
+    printf("|                            Welcome to Level 1                                |\n");
+    printf("|                                                                              |\n");
+    printf(".______________________________________________________________________________.\n");
+    printf("|                                                                              |\n");
 
+    int repeat = 0;
+    char character; 
     //loop until the player completes the level or runs out of lives
     while (lives != 0 && score != 5){
         //output the colour corresponding to the amount of lives yet
@@ -250,7 +269,13 @@ int level_one() {
             break;
         }
 
-        char character = randomChar();
+        if (repeat == 1){
+            printf("|                                Try again !                                   |\n");
+            printf("|                                                                              |\n");
+        } else {
+            character = randomChar();
+          } 
+        
         
         // call conors function to output that char and its morse code
 
@@ -272,8 +297,10 @@ int level_one() {
 
         if (user_input[0] == character){ 
             score++;        //add one to the score and get a new character (start while loop again)
+            repeat = 0;
         } else {
             lives--;        //didn't match so minus 1 life and get a new character (start while loop again)
+            repeat = 1;
         }
 
         // call conors function to display the users input and see if it matches to the correct character
@@ -294,9 +321,11 @@ int level_one() {
 
     if (lives == 0){
         led_set_red();
+        printf("|                You have failed to complete the level :(                      |\n");
         return 1; //you lost
     } else {
         led_set_yellow();
+        printf("Congratulations, you passed level 1 !\n");
         return 0; //!! you won 
     }
 
@@ -384,37 +413,11 @@ void welcomeMessage() {
     printf("|                            Level 1 : .----                                   |\n");
     printf("|                                                                              |\n");
     printf("|                                                                              |\n");
-    printf(".______________________________________________________________________________.\n");
+    printf(".______________________________________________________________________________.\n\n\n");
 }
 
 
-// Return a random character from 0-9 or A-Z when called
-char randomChar() {
-    char random_char;
 
-    // Use the current microsecond count to seed the random number generator
-    uint64_t seed = time_us_64();
-    srand(seed);
-
-    // Generate a random number (0 - 9: numbers; 10 - 35: letters)
-    int random_num = rand() % 35;
-
-    // If 0 -> 9, return straight away
-    // Otherwise, convert the number to an uppercase letter and return the letter
-    if (random_num < 10) {
-        random_char = random_num + '0';
-    } else {
-        random_char = (random_num - 10) + 'A';
-    }
-    char* random_morse = morseCode[random_num];
-
-    // Print statements
-    printf("Character: %c | Morse code equivalent: %s", random_char, random_morse);
-
-    // Return character for checking later
-    return random_char;
-
-}
 
 // Function to convert an inputed word in morse code into a regular string
 char* convertMorse(char* word){
@@ -447,10 +450,10 @@ char* convertMorse(char* word){
 
 
 
-char outputChallenge1(){
-    char random = randomChar();
-    char* randomMorse = malloc(2*sizeof(char));
-    randomMorse[0] = random;
-    randomMorse[1] = '\0';
-    d
-}
+// char outputChallenge1(){
+    // char random = randomChar();
+    // char* randomMorse = malloc(2*sizeof(char));
+    // randomMorse[0] = random;
+    // randomMorse[1] = '\0';
+    // return randomMorse;
+// }
