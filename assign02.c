@@ -254,12 +254,8 @@ void handle_onesec_c(){
     printf("input a space here");
 
 }
-
+//handle the user input
 void handle_twosec_c(){
-    printf("Handle user input now ");
-}
-
-void handle_input(){
     process_sequence = 1;
 }
 
