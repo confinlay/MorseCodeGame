@@ -24,6 +24,7 @@ char* morseCode[] = {"-----", ".----", "..---","...--", "....--", ".....", "-...
 
 // Must declare the main assembly entry point before use.
 void main_asm();
+void printStatistics();
 // Initialise a GPIO pin – see SDK for detail on gpio_init()
 void asm_gpio_init(uint pin) {
  gpio_init(pin);
@@ -427,8 +428,10 @@ int level_one_and_two(int choose_level) {
         level_complete_message(level_choice); //print winning message
         lives = 3;  //reset lives
         score = 0;  //reset score
-        if (choose_level ==2){
+        if (level_choice ==2){
             print_game_complete();
+            while (true);
+   
         }
         return 0;   //!! you won 
     }
