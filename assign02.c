@@ -156,9 +156,15 @@ int repeat = 0;                          //used in the levels to repeat the same
 int level_choice;                        //to decide which level to play
 char randomWord[8];
 
+bool alarm_1_done = false;
+bool alarm_2_done = false;
+
 //sets the start_high variable to 1 - to be called from ASM
+//sets alarm_1_done and alarm_2_done to false to enable alarm interrupts being handled 
 void set_start_high(int i){
     start_high = i;
+    alarm_1_done = false;
+    alarm_2_done = false;
 }
 
 //sets the start_low variable to 1 - to be called from ASM
@@ -269,20 +275,35 @@ char randomChar(int choose_level) {
 void output_user_input(char* input, char *morse){
     printf("|                                                                              |\n");
     printf("|                        You input %s : %s                                    |\n", morse, input);
-    printf("|                                                                              |\n");          
+    printf("|                                                                              |\n");
     return;
 }
-//start handling the arm input array in c
-//called after two second no button pressing alarm 
 
-void handle_onesec_c(){
-    printf("one second has passed!\n");
-    space_timer = 1;
-}
-//handle the user input
-void handle_twosec_c(){
-    printf("two seconds have passed!\n");
-    process_sequence = 1;
+
+/**
+ * @brief Handles alarm interrupts coming every 1 second from arm .
+ * 
+ * if alarm_2_done is true then ignore all alarm interrupts- this will be reset to false after a GPIO interrupt
+ * if alarm_2_done and alarm_1_done are false then handle a space being input 
+ * if alarm_2_done is false and alarm_1_done is ture then handle the netire user input
+ * 
+ * @param alarm_1_done set to true after the first alarm interrupt following a GPIO interrupt
+ * @param alarm_2_done set to true after the second alarm interrupt following a GPIO interrupt
+ */
+void handle_alarm(){
+    if (!alarm_2_done){
+        if (!alarm_1_done){
+            printf("one second has passed!\n");
+            space_timer = 1;
+            alarm_1_done = !alarm_1_done;
+        }else{
+            printf("two seconds have passed!\n");
+            process_sequence = 1;
+            alarm_2_done = !alarm_2_done;
+        }
+
+    }
+    return;
 }
 
 //printing entry message level 1
@@ -409,9 +430,11 @@ int level_one_and_two(int choose_level) {
             score++;        //add one to the score and get a new character (start while loop again)
             if (lives < 3){ //if we are not already on 3 lives, add another life
                 lives++;
-                repeat = 0; //set repeat to 0 so that we get a new character on the next iteration
+            
+            repeat = 0; //set repeat to 0 so that we get a new character on the next iteration
             }
-        } else {
+           
+        }else {
             printf("%s : %c\n", user_input, character);
             lives--;        //didn't match so minus 1 life and get a new character (start while loop again)
             repeat = 1;     //set repeat to 1 since we need the user to attempt the same character again

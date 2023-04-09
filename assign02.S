@@ -3,6 +3,7 @@
 #include "hardware/regs/timer.h"
 #include "hardware/regs/m0plus.h"
 
+
 .syntax unified                                                 @ Specify unified assembly syntax
 .cpu    cortex-m0plus                                           @ Specify CPU type is Cortex M0+
 .thumb                                                          @ Specify thumb assembly for RP2040
@@ -17,10 +18,10 @@
 .global init_alarm
 .align 4                                                        @ Specify code alignment
 
-.equ DFLT_ALARM_TIME, 1000000                                @ Specify the default alarm timeout @ 2 sec
+.equ DFLT_ALARM_TIME, 1000000                                   @ Specify the default alarm timeout @ 2 sec
 
-.equ GPIO_BTN_EN_MSK_FE, 0x00400000                          @ bit22 - when button is pressed, falling edge
-.equ GPIO_BTN_EN_MSK_RE, 0x00800000                          @ bit23 - when button is released, rising edge
+.equ GPIO_BTN_EN_MSK_FE, 0x00400000                             @ bit22 - when button is pressed, falling edge
+.equ GPIO_BTN_EN_MSK_RE, 0x00800000                             @ bit23 - when button is released, rising edge
 
 
 .equ CLEAR_UP_BUTTON_MSK, 0xC000000 @bit 26 + 27
@@ -45,7 +46,11 @@
 .equ NEW_INTERRUPT, 1
 
 
-@ Entry point to the ASM portion of the program
+/**
+ *@brief Entry point to the ASM portion of the program
+ *
+ *
+ */
 main_asm:
    push    {lr}
    bl      init_gpio_led                                         @ initialise the led pin
@@ -60,6 +65,11 @@ main_asm:
    pop     {pc}
 
 
+/**
+ *@brief Handles the GPIO interrupt 
+ *
+ *
+ */
 .thumb_func
 gpio_isr:
     push   {lr} 
@@ -94,8 +104,7 @@ mid_pressed:
 
  @ deal with button released
 mid_released: 
-    bl      init_alarm                                           @reset alarm timer
-    movs    r4, #0                                               @ Move zero into reg 4 to reset alarm timer counter
+    bl      init_alarm                                           @ reset alarm timer
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r6, r1                                               @ move this to r6 (where we store the rising edge time snapshot)
@@ -228,18 +237,15 @@ reset_input_buffer:
     pop     {pc}
 
 handle_onesec_arm:                    
-    bl      handle_onesec_c                         @ call c function which handles spaces
-    b       done                                    @ branch to done
-handle_twosec_arm:                    
-    movs    r7, #1                                  @ Set r7 to high to prevent the C fnctions being called, this will be reset to zero when the button is pr
-    movs    r4, #0                                  @ rest alarm counte to 0 
-    bl      handle_twosec_c                         @ call c function which handles user input
-    b       done                                    @ branch to done
-done:  
-      
+    bl      handle_alarm                         @ call c function which handles spaces
     bl      init_alarm                              @ re-initialise the alarm 
     pop     {pc}
 
+button_still_pressed:
+    pop     {pc}
+ 
+      
+    
 
 @ Set data alignment
 .data
