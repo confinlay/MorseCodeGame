@@ -74,7 +74,7 @@ void asm_gpio_set_irq1(uint pin) {
 
 void welcomeMessage();
 char* convertMorse(char* word);
-char* word_to_morse(char* word)
+char* word_to_morse(char* word);
 
 /**
  * @brief Wrapper function used to call the underlying PIO
@@ -208,11 +208,8 @@ void convert_to_morse(uint32_t intervals[], char *morse_string, int k){
         if (time_intervals[k] <= 150000){                            //if button was pressed for less than 0.15 s
         morse_string[counter] = '.';                            //it is a dot
         } 
-        if (time_intervals[k] <= 1000000 && time_intervals[k] > 150000){  //if button was pressed for between 0.15 and 1 s 
+        if (time_intervals[k] > 150000){  //if button was pressed for between 0.15 and 1 s 
         morse_string[counter] = '-';                            //it is a dash
-        }
-        if (time_intervals[k] > 1000000){                            //if the button was pressed for more than 1 s
-        morse_string[counter] = ' ';                            //it is not recognised
         }
         counter++;                                              //move to the next place in the array 
         k = k + 2;                                              //move two places in the time_intervals array
@@ -285,7 +282,7 @@ void output_user_input(char* input, char *morse){
  * 
  * if alarm_2_done is true then ignore all alarm interrupts- this will be reset to false after a GPIO interrupt
  * if alarm_2_done and alarm_1_done are false then handle a space being input 
- * if alarm_2_done is false and alarm_1_done is ture then handle the netire user input
+ * if alarm_2_done is false and alarm_1_done is true then handle the entire user input
  * 
  * @param alarm_1_done set to true after the first alarm interrupt following a GPIO interrupt
  * @param alarm_2_done set to true after the second alarm interrupt following a GPIO interrupt
@@ -471,8 +468,11 @@ int level_one_and_two(int choose_level) {
 int level_three_and_four(int choose_level){
     int randomNumber;
     int first = 1;
-    char *morse;
-    char morse_sequence[7];
+    char morse[MAXSIZE] = " ";
+    char morse_sequence[20];
+
+    process_sequence = 0;
+    space_timer = 0;
 
     if(choose_level == 1)
         print_level__three();
@@ -509,41 +509,49 @@ int level_three_and_four(int choose_level){
         
         i = 0;
 
-        while (process_sequence != 1){
-            while(space_timer != 1){
-                if(interrupt_occured)
+        while (process_sequence != 1){                          //while on same word
+            memset(morse_sequence, 0, sizeof(morse_sequence));  //reset morse_sequence
+            while(space_timer != 1){                            //while on same letter
+                if(interrupt_occured)                           //wait for button press
                     handle_gpio_interrupt();
-            }
-            space_timer = 0;
-            convert_to_morse(time_intervals, morse_sequence, k);
-            if (first)
-                morse = morse_sequence;
-            else 
-                strcat(morse, morse_sequence);
-            first = 0;
+                if(process_sequence)                            //break if 2 seconds have passed
+                    break;
+            }       
+            if(process_sequence)                                //break outer loop if 2 seconds have passed
+                break;
+            space_timer = 0;                                    //reset to zero for inner loop
+            convert_to_morse(time_intervals, morse_sequence, k);    //convert time intervals to morse
+            printf("Letter: %s\n", morse_sequence);                 // DEBUG PRINT STATEMENT
+            strcat(morse, morse_sequence);                          //add letter to word
+            strcat(morse, " ");                                     //add space
+            clear_time_intervals();                                 //clear time intervals
+            start_high = 0;                                         // DON'T REALLY KNOW WHAT THIS DOES LOL
+            k = 1;                                                      // THIS EITHER
         }
         process_sequence = 0;
 
-        char *user_input = convertMorse(morse);
+        char *user_input;                   //string (one char) to hold what the user has input in letters / numbers
+        user_input = convertMorse(morse);   //convert the dots and dashes to the letter / char
+
 
         output_user_input(user_input, morse);
 
-        if(strcmp(user_input, randomWord) == 0){
-            score++;
-            if (lives < 3){
-                lives ++;
-                repeat = 0;
-            }
-        } else{
-            lives--;
-            repeat = 1;
-        }
+        // if(strcmp(user_input, randomWord) == 0){
+        //     score++;
+        //     if (lives < 3){
+        //         lives ++;
+        //         repeat = 0;
+        //     }
+        // } else{
+        //     lives--;
+        //     repeat = 1;
+        // }
 
-            clear_time_intervals();
+        clear_time_intervals();
 
-            start_high = 0;
-            k = 1;
-            memset(morse_sequence, 0, sizeof(morse_sequence));
+        start_high = 0;
+        k = 1;
+        memset(morse, 0, sizeof(morse));
         }
 
         if(lives == 0){

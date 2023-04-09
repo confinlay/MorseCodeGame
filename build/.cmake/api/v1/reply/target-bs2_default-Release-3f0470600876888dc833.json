@@ -89,7 +89,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-O3 -DNDEBUG -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0"
+					"fragment" : "-mcpu=cortex-m0plus -mthumb -O3 -DNDEBUG"
 				}
 			],
 			"defines" : 
@@ -159,7 +159,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-O3 -DNDEBUG",
+				"fragment" : "-mcpu=cortex-m0plus -mthumb -O3 -DNDEBUG",
 				"role" : "flags"
 			},
 			{
@@ -178,22 +178,12 @@
 			},
 			{
 				"backtrace" : 5,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 5,
-				"fragment" : "--script=/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/boot_stage2/boot_stage2.ld",
+				"fragment" : "-Wl,--script=/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/boot_stage2/boot_stage2.ld",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 7,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 7,
-				"fragment" : "-Map=bs2_default.elf.map",
+				"fragment" : "-Wl,-Map=bs2_default.elf.map",
 				"role" : "flags"
 			}
 		],

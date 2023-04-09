@@ -41,14 +41,17 @@
 			"path" : "build/CMakeFiles/3.25.2/CMakeSystem.cmake"
 		},
 		{
-			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake"
+			"path" : "/Users/conor/Desktop/pico/pico-sdk/cmake/preload/toolchains/pico_arm_gcc.cmake"
+		},
+		{
+			"isExternal" : true,
+			"path" : "/Users/conor/Desktop/pico/pico-sdk/cmake/preload/toolchains/find_compiler.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Darwin-Initialize.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake"
 		},
 		{
 			"isGenerated" : true,
@@ -57,41 +60,6 @@
 		{
 			"isGenerated" : true,
 			"path" : "build/CMakeFiles/3.25.2/CMakeCCompiler.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeDetermineASMCompiler.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeDetermineCompiler.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeDetermineCompilerId.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeCompilerIdDetection.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeFindBinUtils.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang-FindBinUtils.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeASMCompiler.cmake.in"
 		},
 		{
 			"isGenerated" : true,
@@ -113,14 +81,8 @@
 			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeInitializeConfigs.cmake"
 		},
 		{
-			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Darwin.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/UnixPaths.cmake"
+			"path" : "/Users/conor/Desktop/pico/pico-sdk/cmake/Platform/PICO.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -135,17 +97,7 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/AppleClang-CXX.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU-CXX.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -158,19 +110,8 @@
 			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
 		},
 		{
-			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-AppleClang-CXX.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang-CXX.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang.cmake"
+			"path" : "/Users/conor/Desktop/pico/pico-sdk/cmake/Platform/PICO.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -190,27 +131,16 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/AppleClang-C.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU-C.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU.cmake"
 		},
 		{
-			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-AppleClang-C.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang-C.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang.cmake"
+			"path" : "/Users/conor/Desktop/pico/pico-sdk/cmake/Platform/PICO.cmake"
 		},
 		{
 			"isCMake" : true,
@@ -225,27 +155,12 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang-ASM.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU-ASM.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang-ASM.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/CMakeTestASMCompiler.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU.cmake"
 		},
 		{
 			"isExternal" : true,
@@ -300,22 +215,12 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang-ASM.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU-ASM.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang-ASM.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU.cmake"
 		},
 		{
 			"isExternal" : true,
@@ -357,22 +262,12 @@
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang-ASM.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU-ASM.cmake"
 		},
 		{
 			"isCMake" : true,
 			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/Clang.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang-ASM.cmake"
-		},
-		{
-			"isCMake" : true,
-			"isExternal" : true,
-			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Platform/Apple-Clang.cmake"
+			"path" : "/opt/homebrew/Cellar/cmake/3.25.2/share/cmake/Modules/Compiler/GNU.cmake"
 		},
 		{
 			"isExternal" : true,

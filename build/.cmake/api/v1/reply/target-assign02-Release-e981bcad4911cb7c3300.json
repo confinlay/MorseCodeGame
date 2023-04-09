@@ -2,7 +2,7 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "assign02"
+			"path" : "assign02.elf"
 		}
 	],
 	"backtrace" : 1,
@@ -134,7 +134,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-O3 -DNDEBUG -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0"
+					"fragment" : "-mcpu=cortex-m0plus -mthumb -O3 -DNDEBUG"
 				},
 				{
 					"backtrace" : 2,
@@ -503,7 +503,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-O3 -DNDEBUG -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0"
+					"fragment" : "-mcpu=cortex-m0plus -mthumb -O3 -DNDEBUG"
 				},
 				{
 					"backtrace" : 2,
@@ -849,7 +849,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-O3 -DNDEBUG -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk -mmacosx-version-min=13.0"
+					"fragment" : "-mcpu=cortex-m0plus -mthumb -O3 -DNDEBUG"
 				},
 				{
 					"backtrace" : 2,
@@ -1218,7 +1218,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-O3 -DNDEBUG",
+				"fragment" : "-mcpu=cortex-m0plus -mthumb -O3 -DNDEBUG",
 				"role" : "flags"
 			},
 			{
@@ -1232,1632 +1232,812 @@
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=sprintf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=sprintf",
+				"fragment" : "-Wl,--wrap=snprintf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=vsnprintf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=snprintf",
+				"fragment" : "-Wl,--wrap=__clzsi2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__clzdi2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=vsnprintf",
+				"fragment" : "-Wl,--wrap=__ctzsi2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__ctzdi2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__clzsi2",
+				"fragment" : "-Wl,--wrap=__popcountsi2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__popcountdi2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__clzdi2",
+				"fragment" : "-Wl,--wrap=__clz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__clzl",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__ctzsi2",
+				"fragment" : "-Wl,--wrap=__clzll",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_idiv",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__ctzdi2",
+				"fragment" : "-Wl,--wrap=__aeabi_idivmod",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_ldivmod",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__popcountsi2",
+				"fragment" : "-Wl,--wrap=__aeabi_uidiv",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_uidivmod",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__popcountdi2",
+				"fragment" : "-Wl,--wrap=__aeabi_uldivmod",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_dadd",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__clz",
+				"fragment" : "-Wl,--wrap=__aeabi_ddiv",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_dmul",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__clzl",
+				"fragment" : "-Wl,--wrap=__aeabi_drsub",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_dsub",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__clzll",
+				"fragment" : "-Wl,--wrap=__aeabi_cdcmpeq",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_cdrcmple",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_idiv",
+				"fragment" : "-Wl,--wrap=__aeabi_cdcmple",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_dcmpeq",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_idivmod",
+				"fragment" : "-Wl,--wrap=__aeabi_dcmplt",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_dcmple",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_ldivmod",
+				"fragment" : "-Wl,--wrap=__aeabi_dcmpge",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_dcmpgt",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_uidiv",
+				"fragment" : "-Wl,--wrap=__aeabi_dcmpun",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_i2d",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_uidivmod",
+				"fragment" : "-Wl,--wrap=__aeabi_l2d",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_ui2d",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_uldivmod",
+				"fragment" : "-Wl,--wrap=__aeabi_ul2d",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_d2iz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dadd",
+				"fragment" : "-Wl,--wrap=__aeabi_d2lz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_d2uiz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_ddiv",
+				"fragment" : "-Wl,--wrap=__aeabi_d2ulz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_d2f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dmul",
+				"fragment" : "-Wl,--wrap=sqrt",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=cos",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_drsub",
+				"fragment" : "-Wl,--wrap=sin",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=tan",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dsub",
+				"fragment" : "-Wl,--wrap=atan2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=exp",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_cdcmpeq",
+				"fragment" : "-Wl,--wrap=log",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=ldexp",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_cdrcmple",
+				"fragment" : "-Wl,--wrap=copysign",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=trunc",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_cdcmple",
+				"fragment" : "-Wl,--wrap=floor",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=ceil",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dcmpeq",
+				"fragment" : "-Wl,--wrap=round",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=sincos",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dcmplt",
+				"fragment" : "-Wl,--wrap=asin",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=acos",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dcmple",
+				"fragment" : "-Wl,--wrap=atan",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=sinh",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dcmpge",
+				"fragment" : "-Wl,--wrap=cosh",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=tanh",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dcmpgt",
+				"fragment" : "-Wl,--wrap=asinh",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=acosh",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_dcmpun",
+				"fragment" : "-Wl,--wrap=atanh",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=exp2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_i2d",
+				"fragment" : "-Wl,--wrap=log2",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=exp10",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_l2d",
+				"fragment" : "-Wl,--wrap=log10",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=pow",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_ui2d",
+				"fragment" : "-Wl,--wrap=powint",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=hypot",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_ul2d",
+				"fragment" : "-Wl,--wrap=cbrt",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=fmod",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_d2iz",
+				"fragment" : "-Wl,--wrap=drem",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=remainder",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_d2lz",
+				"fragment" : "-Wl,--wrap=remquo",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=expm1",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_d2uiz",
+				"fragment" : "-Wl,--wrap=log1p",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=fma",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_d2ulz",
+				"fragment" : "-Wl,--wrap=__aeabi_lmul",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_fadd",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_d2f",
+				"fragment" : "-Wl,--wrap=__aeabi_fdiv",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_fmul",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=sqrt",
+				"fragment" : "-Wl,--wrap=__aeabi_frsub",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_fsub",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=cos",
+				"fragment" : "-Wl,--wrap=__aeabi_cfcmpeq",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_cfrcmple",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=sin",
+				"fragment" : "-Wl,--wrap=__aeabi_cfcmple",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_fcmpeq",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=tan",
+				"fragment" : "-Wl,--wrap=__aeabi_fcmplt",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_fcmple",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=atan2",
+				"fragment" : "-Wl,--wrap=__aeabi_fcmpge",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_fcmpgt",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=exp",
+				"fragment" : "-Wl,--wrap=__aeabi_fcmpun",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_i2f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=log",
+				"fragment" : "-Wl,--wrap=__aeabi_l2f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_ui2f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=ldexp",
+				"fragment" : "-Wl,--wrap=__aeabi_ul2f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_f2iz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=copysign",
+				"fragment" : "-Wl,--wrap=__aeabi_f2lz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_f2uiz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=trunc",
+				"fragment" : "-Wl,--wrap=__aeabi_f2ulz",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_f2d",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=floor",
+				"fragment" : "-Wl,--wrap=sqrtf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=cosf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=ceil",
+				"fragment" : "-Wl,--wrap=sinf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=tanf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=round",
+				"fragment" : "-Wl,--wrap=atan2f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=expf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=sincos",
+				"fragment" : "-Wl,--wrap=logf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=ldexpf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=asin",
+				"fragment" : "-Wl,--wrap=copysignf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=truncf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=acos",
+				"fragment" : "-Wl,--wrap=floorf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=ceilf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=atan",
+				"fragment" : "-Wl,--wrap=roundf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=sincosf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=sinh",
+				"fragment" : "-Wl,--wrap=asinf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=acosf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=cosh",
+				"fragment" : "-Wl,--wrap=atanf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=sinhf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=tanh",
+				"fragment" : "-Wl,--wrap=coshf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=tanhf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=asinh",
+				"fragment" : "-Wl,--wrap=asinhf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=acoshf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=acosh",
+				"fragment" : "-Wl,--wrap=atanhf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=exp2f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=atanh",
+				"fragment" : "-Wl,--wrap=log2f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=exp10f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=exp2",
+				"fragment" : "-Wl,--wrap=log10f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=powf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=log2",
+				"fragment" : "-Wl,--wrap=powintf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=hypotf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=exp10",
+				"fragment" : "-Wl,--wrap=cbrtf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=fmodf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=log10",
+				"fragment" : "-Wl,--wrap=dremf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=remainderf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=pow",
+				"fragment" : "-Wl,--wrap=remquof",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=expm1f",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=powint",
+				"fragment" : "-Wl,--wrap=log1pf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=fmaf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=hypot",
+				"fragment" : "-Wl,--wrap=malloc",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=calloc",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=cbrt",
+				"fragment" : "-Wl,--wrap=realloc",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=free",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=fmod",
+				"fragment" : "-Wl,--wrap=memcpy",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=memset",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=drem",
+				"fragment" : "-Wl,--wrap=__aeabi_memcpy",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_memset",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=remainder",
+				"fragment" : "-Wl,--wrap=__aeabi_memcpy4",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_memset4",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=remquo",
+				"fragment" : "-Wl,--wrap=__aeabi_memcpy8",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=__aeabi_memset8",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=expm1",
+				"fragment" : "-Wl,-Map=assign02.elf.map",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--script=/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_standard_link/memmap_default.ld",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=log1p",
+				"fragment" : "-Wl,-z,max-page-size=4096",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--gc-sections",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=fma",
+				"fragment" : "-Wl,--wrap=printf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=vprintf",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_lmul",
+				"fragment" : "-Wl,--wrap=puts",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "-Xlinker",
+				"fragment" : "-Wl,--wrap=putchar",
 				"role" : "flags"
 			},
 			{
 				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fadd",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fdiv",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fmul",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_frsub",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fsub",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_cfcmpeq",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_cfrcmple",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_cfcmple",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fcmpeq",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fcmplt",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fcmple",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fcmpge",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fcmpgt",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_fcmpun",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_i2f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_l2f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_ui2f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_ul2f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_f2iz",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_f2lz",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_f2uiz",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_f2ulz",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_f2d",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=sqrtf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=cosf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=sinf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=tanf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=atan2f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=expf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=logf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=ldexpf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=copysignf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=truncf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=floorf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=ceilf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=roundf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=sincosf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=asinf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=acosf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=atanf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=sinhf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=coshf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=tanhf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=asinhf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=acoshf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=atanhf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=exp2f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=log2f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=exp10f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=log10f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=powf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=powintf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=hypotf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=cbrtf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=fmodf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=dremf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=remainderf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=remquof",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=expm1f",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=log1pf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=fmaf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=malloc",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=calloc",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=realloc",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=free",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=memcpy",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=memset",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_memcpy",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_memset",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_memcpy4",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_memset4",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_memcpy8",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=__aeabi_memset8",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Map=assign02.elf.map",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--script=/Users/conor/Desktop/pico/pico-sdk/src/rp2_common/pico_standard_link/memmap_default.ld",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-z",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "max-page-size=4096",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--gc-sections",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=printf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=vprintf",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=puts",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=putchar",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "-Xlinker",
-				"role" : "flags"
-			},
-			{
-				"backtrace" : 2,
-				"fragment" : "--wrap=getchar",
+				"fragment" : "-Wl,--wrap=getchar",
 				"role" : "flags"
 			},
 			{
@@ -2869,7 +2049,7 @@
 		"language" : "CXX"
 	},
 	"name" : "assign02",
-	"nameOnDisk" : "assign02",
+	"nameOnDisk" : "assign02.elf",
 	"paths" : 
 	{
 		"build" : ".",

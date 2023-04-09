@@ -15,7 +15,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "CMAKE_ADDR2LINE-NOTFOUND"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-addr2line"
 		},
 		{
 			"name" : "CMAKE_AR",
@@ -31,7 +31,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/ar"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-ar"
 		},
 		{
 			"name" : "CMAKE_ASM_COMPILER",
@@ -46,8 +46,8 @@
 					"value" : "ASM compiler"
 				}
 			],
-			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/cc"
+			"type" : "STRING",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc"
 		},
 		{
 			"name" : "CMAKE_ASM_COMPILER_AR",
@@ -59,11 +59,11 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "LLVM archiver"
+					"value" : "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "CMAKE_ASM_COMPILER_AR-NOTFOUND"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc-ar"
 		},
 		{
 			"name" : "CMAKE_ASM_COMPILER_RANLIB",
@@ -75,11 +75,11 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "Generate index for LLVM archive"
+					"value" : "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "CMAKE_ASM_COMPILER_RANLIB-NOTFOUND"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc-ranlib"
 		},
 		{
 			"name" : "CMAKE_ASM_COMPILER_WORKS",
@@ -107,7 +107,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : ""
+			"value" : "-mcpu=cortex-m0plus -mthumb"
 		},
 		{
 			"name" : "CMAKE_ASM_FLAGS_DEBUG",
@@ -123,7 +123,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "-g"
+			"value" : "-Og -g"
 		},
 		{
 			"name" : "CMAKE_ASM_FLAGS_MINSIZEREL",
@@ -172,18 +172,6 @@
 			],
 			"type" : "STRING",
 			"value" : "-O2 -g -DNDEBUG"
-		},
-		{
-			"name" : "CMAKE_BACKWARDS_COMPATIBILITY",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "For backwards compatibility, what version of CMake commands and syntax should this version of CMake try to support."
-				}
-			],
-			"type" : "STRING",
-			"value" : "2.4"
 		},
 		{
 			"name" : "CMAKE_BUILD_TYPE",
@@ -314,8 +302,40 @@
 					"value" : "CXX compiler"
 				}
 			],
+			"type" : "STRING",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-g++"
+		},
+		{
+			"name" : "CMAKE_CXX_COMPILER_AR",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
+				}
+			],
 			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/c++"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc-ar"
+		},
+		{
+			"name" : "CMAKE_CXX_COMPILER_RANLIB",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc-ranlib"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS",
@@ -331,7 +351,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : ""
+			"value" : "-mcpu=cortex-m0plus -mthumb"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS_DEBUG",
@@ -347,7 +367,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "-g"
+			"value" : "-Og -g"
 		},
 		{
 			"name" : "CMAKE_CXX_FLAGS_MINSIZEREL",
@@ -410,8 +430,40 @@
 					"value" : "C compiler"
 				}
 			],
+			"type" : "STRING",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc"
+		},
+		{
+			"name" : "CMAKE_C_COMPILER_AR",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "A wrapper around 'ar' adding the appropriate '--plugin' option for the GCC compiler"
+				}
+			],
 			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/cc"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc-ar"
+		},
+		{
+			"name" : "CMAKE_C_COMPILER_RANLIB",
+			"properties" : 
+			[
+				{
+					"name" : "ADVANCED",
+					"value" : "1"
+				},
+				{
+					"name" : "HELPSTRING",
+					"value" : "A wrapper around 'ranlib' adding the appropriate '--plugin' option for the GCC compiler"
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc-ranlib"
 		},
 		{
 			"name" : "CMAKE_C_FLAGS",
@@ -427,7 +479,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : ""
+			"value" : "-mcpu=cortex-m0plus -mthumb"
 		},
 		{
 			"name" : "CMAKE_C_FLAGS_DEBUG",
@@ -443,7 +495,7 @@
 				}
 			],
 			"type" : "STRING",
-			"value" : "-g"
+			"value" : "-Og -g"
 		},
 		{
 			"name" : "CMAKE_C_FLAGS_MINSIZEREL",
@@ -531,7 +583,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "MACHO"
+			"value" : "ELF"
 		},
 		{
 			"name" : "CMAKE_EXE_LINKER_FLAGS",
@@ -714,22 +766,6 @@
 			"value" : "/Users/conor/Desktop/pico/pico-apps/assignments/assign02"
 		},
 		{
-			"name" : "CMAKE_INSTALL_NAME_TOOL",
-			"properties" : 
-			[
-				{
-					"name" : "ADVANCED",
-					"value" : "1"
-				},
-				{
-					"name" : "HELPSTRING",
-					"value" : "Path to a program."
-				}
-			],
-			"type" : "FILEPATH",
-			"value" : "/usr/bin/install_name_tool"
-		},
-		{
 			"name" : "CMAKE_INSTALL_PREFIX",
 			"properties" : 
 			[
@@ -755,7 +791,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/ld"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-ld"
 		},
 		{
 			"name" : "CMAKE_MAKE_PROGRAM",
@@ -867,7 +903,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/nm"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-nm"
 		},
 		{
 			"name" : "CMAKE_NUMBER_OF_MAKEFILES",
@@ -891,11 +927,11 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "Path to a program."
+					"value" : ""
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "CMAKE_OBJCOPY-NOTFOUND"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-objcopy"
 		},
 		{
 			"name" : "CMAKE_OBJDUMP",
@@ -907,47 +943,11 @@
 				},
 				{
 					"name" : "HELPSTRING",
-					"value" : "Path to a program."
+					"value" : ""
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/objdump"
-		},
-		{
-			"name" : "CMAKE_OSX_ARCHITECTURES",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Build architectures for OSX"
-				}
-			],
-			"type" : "STRING",
-			"value" : ""
-		},
-		{
-			"name" : "CMAKE_OSX_DEPLOYMENT_TARGET",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Minimum OS X version to target for deployment (at runtime); newer APIs weak linked. Set to empty string for default value."
-				}
-			],
-			"type" : "STRING",
-			"value" : "13.0"
-		},
-		{
-			"name" : "CMAKE_OSX_SYSROOT",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "The product will be built against the headers and libraries located inside the indicated SDK."
-				}
-			],
-			"type" : "PATH",
-			"value" : "/Library/Developer/CommandLineTools/SDKs/MacOSX13.1.sdk"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-objdump"
 		},
 		{
 			"name" : "CMAKE_PLATFORM_INFO_INITIALIZED",
@@ -1011,7 +1011,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/ranlib"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-ranlib"
 		},
 		{
 			"name" : "CMAKE_READELF",
@@ -1027,7 +1027,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "CMAKE_READELF-NOTFOUND"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-readelf"
 		},
 		{
 			"name" : "CMAKE_ROOT",
@@ -1247,7 +1247,7 @@
 				}
 			],
 			"type" : "FILEPATH",
-			"value" : "/Library/Developer/CommandLineTools/usr/bin/strip"
+			"value" : "/opt/homebrew/bin/arm-none-eabi-strip"
 		},
 		{
 			"name" : "CMAKE_TOOLCHAIN_FILE",
@@ -1255,10 +1255,10 @@
 			[
 				{
 					"name" : "HELPSTRING",
-					"value" : ""
+					"value" : "The CMake toolchain file"
 				}
 			],
-			"type" : "INTERNAL",
+			"type" : "FILEPATH",
 			"value" : "/Users/conor/Desktop/pico/pico-sdk/cmake/preload/toolchains/pico_arm_gcc.cmake"
 		},
 		{
@@ -1322,18 +1322,6 @@
 			"value" : "/Applications/Doxygen.app/Contents/Resources/doxygen"
 		},
 		{
-			"name" : "EXECUTABLE_OUTPUT_PATH",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Single output directory for building all executables."
-				}
-			],
-			"type" : "PATH",
-			"value" : ""
-		},
-		{
 			"name" : "FAMILY_MCUS",
 			"properties" : 
 			[
@@ -1356,18 +1344,6 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "[/opt/homebrew/Frameworks/Python.framework/Versions/3.11/bin/python3.11][cfound components: Interpreter ][v3.11.2()]"
-		},
-		{
-			"name" : "LIBRARY_OUTPUT_PATH",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Single output directory for building all libraries."
-				}
-			],
-			"type" : "PATH",
-			"value" : ""
 		},
 		{
 			"name" : "PICO_BOARD",
@@ -1442,6 +1418,42 @@
 			"value" : "/Users/conor/Desktop/pico/pico-sdk/cmake/preload/platforms/rp2040.cmake"
 		},
 		{
+			"name" : "PICO_COMPILER_ASM",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : ""
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc"
+		},
+		{
+			"name" : "PICO_COMPILER_CC",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a program."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-gcc"
+		},
+		{
+			"name" : "PICO_COMPILER_CXX",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a program."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-g++"
+		},
+		{
 			"name" : "PICO_COPY_TO_RAM",
 			"properties" : 
 			[
@@ -1466,6 +1478,18 @@
 			"value" : "compile_time_choice"
 		},
 		{
+			"name" : "PICO_DEOPTIMIZED_DEBUG",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Build debug builds with -O0"
+				}
+			],
+			"type" : "BOOL",
+			"value" : "OFF"
+		},
+		{
 			"name" : "PICO_DOXYGEN_EXCLUDE_PATHS",
 			"properties" : 
 			[
@@ -1475,7 +1499,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : " /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/cmsis /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs"
+			"value" : " /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/cmsis /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/cmsis /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs /Users/conor/Desktop/pico/pico-sdk/src/rp2_common/cmsis /Users/conor/Desktop/pico/pico-sdk/src/rp2040/hardware_regs"
 		},
 		{
 			"name" : "PICO_DOXYGEN_PATHS",
@@ -1512,6 +1536,30 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "0"
+		},
+		{
+			"name" : "PICO_OBJCOPY",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a program."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-objcopy"
+		},
+		{
+			"name" : "PICO_OBJDUMP",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Path to a program."
+				}
+			],
+			"type" : "FILEPATH",
+			"value" : "/opt/homebrew/bin/arm-none-eabi-objdump"
 		},
 		{
 			"name" : "PICO_ON_DEVICE",
@@ -1634,42 +1682,6 @@
 			"value" : ""
 		},
 		{
-			"name" : "Project_BINARY_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "/Users/conor/Desktop/pico/pico-apps/assignments/assign02/build"
-		},
-		{
-			"name" : "Project_IS_TOP_LEVEL",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "ON"
-		},
-		{
-			"name" : "Project_SOURCE_DIR",
-			"properties" : 
-			[
-				{
-					"name" : "HELPSTRING",
-					"value" : "Value Computed by CMake"
-				}
-			],
-			"type" : "STATIC",
-			"value" : "/Users/conor/Desktop/pico/pico-apps/assignments/assign02"
-		},
-		{
 			"name" : "_Python3_Compiler_REASON_FAILURE",
 			"properties" : 
 			[
@@ -1715,7 +1727,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "Python;3;11;2;64;;cpython-311-darwin;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages"
+			"value" : "Python;3;11;2;64;;;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages;/opt/homebrew/opt/python@3.11/Frameworks/Python.framework/Versions/3.11/lib/python3.11/site-packages"
 		},
 		{
 			"name" : "_Python3_INTERPRETER_SIGNATURE",
@@ -1728,6 +1740,18 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "91fa6b41055f536ea0963b4ef9ef5b99"
+		},
+		{
+			"name" : "_Python3_Interpreter_REASON_FAILURE",
+			"properties" : 
+			[
+				{
+					"name" : "HELPSTRING",
+					"value" : "Interpreter reason failure"
+				}
+			],
+			"type" : "INTERNAL",
+			"value" : ""
 		},
 		{
 			"name" : "_Python3_NumPy_REASON_FAILURE",
