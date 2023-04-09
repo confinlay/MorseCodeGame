@@ -366,6 +366,7 @@ int level_one_and_two(int choose_level) {
             repeat = 0; //set repeat to 0 so that we get a new character on the next iteration
         } else {
             lives--;        //didn't match so minus 1 life and get a new character (start while loop again)
+            score = 0;
             repeat = 1;     //set repeat to 1 since we need the user to attempt the same character again
         }
         
