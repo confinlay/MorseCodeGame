@@ -501,10 +501,6 @@ int level_one_and_two(int choose_level) {
         printf("error in choosing level!\n"); //print error
     }
 
-    // Reset statistic variables at the start of a new level
-    incorrect_answers = 0;
-    correct_answers = 0;
-
     //char character; 
     //loop until the player completes the level or runs out of lives
     while (lives != 0 && score != 5){
@@ -581,12 +577,18 @@ int level_one_and_two(int choose_level) {
         lives = 3;  //reset lives
         score = 0;  //reset score
         repeat = 0; //don't enter repeat next iteration
+        // Reset statistic variables at the start of a new level
+        incorrect_answers = 0;
+        correct_answers = 0;
         return 1;   //you lost
     } else {
         led_set_yellow();   //set the LED to yellow to indicate you won (PROB CHANGE THIS !)
         level_complete_message(level_choice); //print winning message
         lives = 3;  //reset lives
         score = 0;  //reset score
+        // Reset statistic variables at the start of a new level
+        incorrect_answers = 0;
+        correct_answers = 0;
         if (level_choice ==2){
             print_game_complete();
             while (true);
