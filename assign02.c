@@ -435,7 +435,18 @@ void print_level_two(){
     printf("|                                                                              |\n");
     return;
 }
-
+/**
+ * @brief Printing game complete message 
+ * 
+ */
+void print_game_complete(){
+    printf(".__.\n");
+    printf("|                                                                              |\n");
+    printf("|                Congratulations! You have completed the game                  |\n");
+    printf("|                                                                              |\n");
+    printf(".__.\n");
+    return;
+}
 /**
  * @brief Printing level complete message and statistics
  * 
@@ -451,6 +462,10 @@ void level_complete_message(int choose_level){
         printf("|                     Congratulations, you passed level 2 !                    |\n");
         printf("|                                                                              |\n");
         printf(".______________________________________________________________________________.\n");
+        print_game_complete();
+        while (true);
+   
+        
     }
     printStatistics(); // Print statistics relating to performance
 }
@@ -468,18 +483,6 @@ void clear_time_intervals(){
         }
 }
 
-/**
- * @brief Printing game complete message 
- * 
- */
-void print_game_complete(){
-    printf(".__.\n");
-    printf("|                                                                              |\n");
-    printf("|                Congratulations! You have completed the game                  |\n");
-    printf("|                                                                              |\n");
-    printf(".__.\n");
-    return;
-}
 
 
 /**
@@ -589,11 +592,7 @@ int level_one_and_two(int choose_level) {
         // Reset statistic variables at the start of a new level
         incorrect_answers = 0;
         correct_answers = 0;
-        if (level_choice ==2){
-            print_game_complete();
-            while (true);
-   
-        }
+            
         return 0;   //!! you won 
     }
 
