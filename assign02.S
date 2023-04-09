@@ -64,7 +64,7 @@ main_asm:
 gpio_isr:
     push   {lr} 
 
-    @bl     watchdog_update                                      @update watchdog
+    bl     watchdog_update                                       @update watchdog
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_PROC0_INTS2_OFFSET)    @ load i/o register memory location 
     ldr    r1, [r2]                                              @ load value into r2 to check which interrupt was triggered 
     
@@ -95,7 +95,6 @@ mid_pressed:
  @ deal with button released
 mid_released: 
     bl      init_alarm                                           @reset alarm timer
-    movs    r4, #0                                               @ Move zero into reg 4 to reset alarm timer counter
     ldr     r2, =(TIMER_BASE + 0x28)                             @ load the timer register base + the offset to get "TIMERAWL" (using the name TIMERAWL wasnt working)
     ldr     r1, [r2]                                             @ store the current time in r1
     movs    r6, r1                                               @ move this to r6 (where we store the rising edge time snapshot)
@@ -115,7 +114,6 @@ finish:
     @ clear the interrupt and branch back to main
     ldr    r2, =(IO_BANK0_BASE + IO_BANK0_INTR2_OFFSET)          @ load register to clear interrupts
     str    r0, [r2]                                              @ store whatever mask have in r0 at this address, clearing the interrupt
-    //bl     init_alarm                                          @ reset the alarm timer
     bl     watchdog_update                                       @ update watchdog                       
     movs   r0, NEW_INTERRUPT                                     @ move 1 into r0 
     bl     check_for_interrupt                                   @ set the interrupt_occured variable to 1 in the c program so that we know an interrupt has occured
@@ -185,8 +183,6 @@ alrm_isr_installer:
 @ Subroutine to set the alarm time and enable timer interupts
 init_alarm:
     push    {lr}                                    @ Store the link register to the stack
-    @bl      handle_twosec_c 
-    @Enables timer interupt
     movs    r0, #1                                  @ Load 1 into the regster for use in enabling timer interupts
     ldr     r1, =(TIMER_BASE + TIMER_INTE_OFFSET)   @ Load the adress for the timer interrupt enable register    
     str     r0, [r1]                                @ Set the interrupt enable register to 1 to enable timer interrupts
@@ -214,32 +210,16 @@ alarm_isr:
     
     cmp     r0, r7                                  @ R7 will be high if button is still being pressed 
     beq     button_still_pressed                    @ if button still pressed then dont handle interrupt
-    adds    r4, r4, r0                              @ Add 1 to increment the alarm counter
-    cmp     r4, r0                                  @ check if the alarm has occured once
-    beq     handle_onesec_arm                       @ if so the handle the one second alarm
-    cmp     r4, r0 
-    bne     handle_twosec_arm                       @ if not then handle the two second alarm
+ 
+handle_onesec_arm:                    
+    bl      handle_alarm                            @ call c function which handles alarm
+    bl      init_alarm                              @ re-initialise the alarm 
+    pop     {pc}
 
 button_still_pressed:
     pop     {pc}
-    
-reset_input_buffer:
-    push    {lr}
-    movs    r6, #0;
-    pop     {pc}
 
-handle_onesec_arm:                    
-    bl      handle_onesec_c                         @ call c function which handles spaces
-    b       done                                    @ branch to done
-handle_twosec_arm:                    
-    movs    r7, #1                                  @ Set r7 to high to prevent the C fnctions being called, this will be reset to zero when the button is pr
-    movs    r4, #0                                  @ rest alarm counte to 0 
-    bl      handle_twosec_c                         @ call c function which handles user input
-    b       done                                    @ branch to done
-done:  
-      
-    bl      init_alarm                              @ re-initialise the alarm 
-    pop     {pc}
+   
 
 
 @ Set data alignment
