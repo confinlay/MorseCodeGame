@@ -74,6 +74,7 @@ void asm_gpio_set_irq1(uint pin) {
 
 void welcomeMessage();
 char* convertMorse(char* word);
+char* word_to_morse(char* word)
 
 /**
  * @brief Wrapper function used to call the underlying PIO
@@ -697,4 +698,18 @@ char* convertMorse(char* word){
     }
     converted[converted_index] = '\0';                                  // null-terminate output (removing trailing question mark)
     return converted;                       
+}
+
+//Converts string of capital letters (word) to morse code separated by spaces
+char* word_to_morse(char* word){
+    char* morse = (char*)malloc(MAXSIZE);
+    int word_index = 0;
+
+    while(word[word_index] != '\0'){
+        strcat(morse, morseCode[word[word_index] + 10 - 'A']);
+        strcat(morse, " ");
+        word_index++;
+    }
+
+    return morse;
 }

@@ -9,10 +9,32 @@
 
 char* convertMorse(char* word);
 char randomChar();
+char* word_to_morse(char* word);
 
 char* morseCode[] = {"-----", ".----", "..---","...--", "....--", ".....", "-....", "--...", "---..", "----.",".-", "-...", "-.-.", "-..", ".", "..-.",
     "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-",
     ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--.."};
+
+char* words[] = {
+    "ace", "apple", "blue", "bunny", "cape",
+    "chair", "daisy", "dance", "eagle", "ember",
+    "frost", "fudge", "glide", "grape", "honey",
+    "icicle", "jazz", "jelly", "kangaroo", "kitten",
+    "lemon", "lucky", "marble", "mango", "navy",
+    "ocean", "opal", "pepper", "piano", "quilt",
+    "rabbit", "river", "sunny", "swirl", "tiger",
+    "turtle", "umbrella", "unique", "violet", "wave",
+    "wheat", "whisk", "yellow", "lunch", "zebra",
+    "acorn", "badger", "banana", "butter", "cactus",
+    "coffee", "comet", "dagger", "dragon", "flamingo",
+    "gorilla", "guitar", "hippo", "hockey", "jungle",
+    "ketchup", "kiwi", "koala", "laptop", "lizard",
+    "mascot", "monkey", "mountain", "mustard", "necklace",
+    "octopus", "penguin", "pumpkin", "rainbow", "robot",
+    "sailor", "seagull", "shark", "snowman", "squirrel",
+    "treasure", "unicorn", "volcano", "watermelon", "whale",
+    "wizard", "xylophone", "yak", "yellowstone", "zeppelin"
+};
 
 // Main entry point of the application
 int main() {
@@ -24,7 +46,14 @@ int main() {
     //char x = randomChar();
     char* string_converted = convertMorse(string_morse);
 
-    printf("Converted: %s" , string_converted);
+    printf("Converted: %s\n" , string_converted);
+
+    char* myname = "CONOR";
+    char* morseName = word_to_morse(myname);
+    printf("Name: %s, Morse Name = %s\n", myname, morseName);
+
+    char* convertedBack = convertMorse(morseName);
+    printf("Converted back: %s\n", convertedBack);
 
 
     return(0);
@@ -85,6 +114,19 @@ char* convertMorse(char* word){
                                                      
         letter[letter_index++] = word[word_index++];                    // either way, read in another characted from the input, post incrementing both char arrays
     }
-    converted[converted_index-1] = '\0';                                // null-terminate output (removing trailing question mark)
+    converted[converted_index] = '\0';                                // null-terminate output (removing trailing question mark)
     return converted;                       
+}
+
+char* word_to_morse(char* word){
+    char* morse = (char*)malloc(MAXSIZE);
+    int word_index = 0;
+
+    while(word[word_index] != '\0'){
+        strcat(morse, morseCode[word[word_index] + 10 - 'A']);
+        strcat(morse, " ");
+        word_index++;
+    }
+
+    return morse;
 }

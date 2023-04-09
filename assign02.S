@@ -217,8 +217,7 @@ alarm_isr:
     adds    r4, r4, r0                              @ Add 1 to increment the alarm counter
     cmp     r4, r0                                  @ check if the alarm has occured once
     beq     handle_onesec_arm                       @ if so the handle the one second alarm
-    cmp     r4, r0 
-    bne     handle_twosec_arm                       @ if not then handle the two second alarm
+    b       handle_twosec_arm                       @ if not then handle the two second alarm
 
 button_still_pressed:
     pop     {pc}
