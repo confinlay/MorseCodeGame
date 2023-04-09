@@ -223,7 +223,19 @@ alarm_isr:
     
     cmp     r0, r7                                  @ R7 will be high if button is still being pressed 
     beq     button_still_pressed                    @ if button still pressed then dont handle interrupt
- 
+    adds    r4, r4, r0                              @ Add 1 to increment the alarm counter
+    cmp     r4, r0                                  @ check if the alarm has occured once
+    beq     handle_onesec_arm                       @ if so the handle the one second alarm
+    b       handle_twosec_arm                       @ if not then handle the two second alarm
+
+button_still_pressed:
+    pop     {pc}
+    
+reset_input_buffer:
+    push    {lr}
+    movs    r6, #0;
+    pop     {pc}
+
 handle_onesec_arm:                    
     bl      handle_alarm                         @ call c function which handles spaces
     bl      init_alarm                              @ re-initialise the alarm 
