@@ -24,6 +24,7 @@ char* morseCode[] = {"-----", ".----", "..---","...--", "....--", ".....", "-...
 
 // Must declare the main assembly entry point before use.
 void main_asm();
+void printStatistics();
 // Initialise a GPIO pin – see SDK for detail on gpio_init()
 void asm_gpio_init(uint pin) {
  gpio_init(pin);
@@ -131,13 +132,19 @@ int score = 0;                           //score set to 0 at the start
 char character;                          //the character the user should input morse for
 int repeat = 0;                          //used in the levels to repeat the same character or generate another one based on if the user input the correct code
 int level_choice;                        //to decide which level to play
+bool alarm_1_done = false;
+bool alarm_2_done = false;
+
 int incorrect_answers = 0;               //for incorrect answer statistics
 int correct_answers = 0;                 //for correct answers statistics
 
 //sets the start_high variable to 1 - to be called from ASM
 void set_start_high(int i){
     start_high = i;
+    alarm_1_done = false;
+    alarm_2_done = false;
 }
+
 
 //sets the start_low variable to 1 - to be called from ASM
 void set_start_low(int i){
@@ -243,6 +250,20 @@ char randomChar(int choose_level) {
 
 }
 
+void handle_alarm(){
+    if (!alarm_2_done){
+        if (!alarm_1_done){
+            //printf("one second has passed!\n");
+            alarm_1_done = !alarm_1_done;
+        }else{
+            //printf("two seconds have passed!\n");
+            process_sequence = 1;
+            alarm_2_done = !alarm_2_done;
+        }
+
+    }
+    return;
+}
 
 void output_user_input(char character, char *morse){
     printf("|                                                                              |\n");
@@ -253,14 +274,7 @@ void output_user_input(char character, char *morse){
 //start handling the arm input array in c
 //called after two second no button pressing alarm 
 
-void handle_onesec_c(){
-    printf("input a space here");
 
-}
-//handle the user input
-void handle_twosec_c(){
-    process_sequence = 1;
-}
 
 //printing entry message level 1
 void print_level_one(){
@@ -308,6 +322,16 @@ void clear_time_intervals(){
         }
 }
 
+
+void print_game_complete(){
+    printf(".__.\n");
+    printf("|                                                                              |\n");
+    printf("|                Congratulations! You have completed the game                  |\n");
+    printf("|                                                                              |\n");
+    printf(".__.\n");
+    return;
+}
+
 //level one and two, depending on what "choose_level" is input. 1 for level 1, 2 for level 2. 
 int level_one_and_two(int choose_level) {
     if (choose_level == 1){ //print the level 1 entry message
@@ -317,10 +341,6 @@ int level_one_and_two(int choose_level) {
     } else {
         printf("error in choosing level!\n"); //print error
     }
-
-    // Reset statistic variables at the start of a new level
-    int incorrect_answers = 0;
-    int correct_answers = 0;
 
     //char character; 
     //loop until the player completes the level or runs out of lives
@@ -374,6 +394,7 @@ int level_one_and_two(int choose_level) {
             repeat = 0; //set repeat to 0 so that we get a new character on the next iteration
         } else {
             lives--;        //didn't match so minus 1 life and get a new character (start while loop again)
+            score = 0;
             repeat = 1;     //set repeat to 1 since we need the user to attempt the same character again
             incorrect_answers++; // Increment incorrect guesses for statistics
         }
@@ -397,16 +418,30 @@ int level_one_and_two(int choose_level) {
         lives = 3;  //reset lives
         score = 0;  //reset score
         repeat = 0; //don't enter repeat next iteration
+        // Reset statistic variables at the start of a new level
+        incorrect_answers = 0;
+        correct_answers = 0;
         return 1;   //you lost
     } else {
         led_set_yellow();   //set the LED to yellow to indicate you won (PROB CHANGE THIS !)
         level_complete_message(level_choice); //print winning message
         lives = 3;  //reset lives
         score = 0;  //reset score
+        // Reset statistic variables at the start of a new level
+        incorrect_answers = 0;
+        correct_answers = 0;
+        if (level_choice ==2){
+            print_game_complete();
+            while (true);
+   
+        }
         return 0;   //!! you won 
     }
 
 }
+
+
+
 
 int choose_level() {
     while (process_sequence != 1){      //until the alarm goes off, accept inputs
@@ -450,7 +485,7 @@ int main() {
     uint offset = pio_add_program(pio, &ws2812_program);
     ws2812_program_init(pio, 0, offset, WS2812_PIN, 800000, IS_RGBW);
 
-    //watchdog_init(); // initialise watchdog timer
+    watchdog_init(); // initialise watchdog timer
     main_asm(); // initialise pins and interrupt
     welcomeMessage(); // print welcome message
     
