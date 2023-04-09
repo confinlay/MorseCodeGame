@@ -134,6 +134,8 @@ int level_choice;                        //to decide which level to play
 bool alarm_1_done = false;
 bool alarm_2_done = false;
 
+int incorrect_answers = 0;               //for incorrect answer statistics
+int correct_answers = 0;                 //for correct answers statistics
 
 //sets the start_high variable to 1 - to be called from ASM
 void set_start_high(int i){
@@ -307,6 +309,7 @@ void level_complete_message(int choose_level){
         printf("|                                                                              |\n");
         printf(".______________________________________________________________________________.\n");
     }
+    printStatistics(); // Print statistics relating to performance
 }
 
 //used to clear the array storing the timer intervals
@@ -337,6 +340,10 @@ int level_one_and_two(int choose_level) {
     } else {
         printf("error in choosing level!\n"); //print error
     }
+
+    // Reset statistic variables at the start of a new level
+    int incorrect_answers = 0;
+    int correct_answers = 0;
 
     //char character; 
     //loop until the player completes the level or runs out of lives
@@ -383,6 +390,7 @@ int level_one_and_two(int choose_level) {
 
         if (user_input[0] == character){  //if the users input is correct
             score++;        //add one to the score and get a new character (start while loop again)
+            correct_answers++; // Increment correct guesses for statistics
             if (lives < 3){ //if we are not already on 3 lives, add another life
                 lives++;
             }
@@ -391,6 +399,7 @@ int level_one_and_two(int choose_level) {
             lives--;        //didn't match so minus 1 life and get a new character (start while loop again)
             score = 0;
             repeat = 1;     //set repeat to 1 since we need the user to attempt the same character again
+            incorrect_answers++; // Increment incorrect guesses for statistics
         }
         
         //clear the time_intervals array
@@ -408,6 +417,7 @@ int level_one_and_two(int choose_level) {
         printf("|                You have failed to complete the level :(                      |\n");
         printf("|                                                                              |\n");
         printf(".______________________________________________________________________________.\n");
+        printStatistics(); // print statistics relating to performance
         lives = 3;  //reset lives
         score = 0;  //reset score
         repeat = 0; //don't enter repeat next iteration
@@ -584,4 +594,56 @@ char* convertMorse(char* word){
     }
     converted[converted_index] = '\0';                                // null-terminate output (removing trailing question mark)
     return converted;                       
+}
+
+void printStatistics() {
+    // Calculate accuracy of correct answers
+    double accuracy;
+    double total_accuracy = (correct_answers + incorrect_answers) * 1.0;
+    double correct_accuracy = correct_answers * 1.0;
+    accuracy = (correct_accuracy / total_accuracy) * 100.0;
+
+    // Handle different spacings for different number sizes
+    char incorrect_spacing[3];
+    char correct_spacing[3];
+    char accuracy_spacing[3];
+    // Incorrect Answers
+    if (incorrect_answers >= 100) { // If answers has 3 digits, print all digits
+        incorrect_spacing[0] = '\0';
+    } else if (incorrect_answers >= 10) { // If answers has 2 digits, print 2 digits and 1 space
+        incorrect_spacing[0] = ' ';
+        incorrect_spacing[1] = '\0';
+    } else { // If answers has 1 digits, print 1 digit and 2 spaces
+        incorrect_spacing[0] = ' ';
+        incorrect_spacing[1] = ' ';
+        incorrect_spacing[2] = '\0';
+    }
+    // Correct Asnwers
+    if (correct_answers >= 100) { // If answers has 3 digits, print all digits
+        correct_spacing[0] = '\0';
+    } else if (correct_answers >= 10) { // If answers has 2 digits, print 2 digits and 1 space
+        correct_spacing[0] = ' ';
+        correct_spacing[1] = '\0';
+    } else { // If answers has 1 digits, print 1 digit and 2 spaces
+        correct_spacing[0] = ' ';
+        correct_spacing[1] = ' ';
+        correct_spacing[2] = '\0';
+    }
+    // Accuracy
+    if (accuracy == 100) {
+        accuracy_spacing[0] = '\0';
+    } else if (accuracy >= 10) { // If accuracy is greater than 10% (total 4 digits XX.XX)
+        accuracy_spacing[0] = ' ';
+        accuracy_spacing[1] = '\0';
+    } else { // If accuracy is less than 10% (total 3 digits X.XX)
+        accuracy_spacing[0] = ' ';
+        accuracy_spacing[1] = ' ';
+        accuracy_spacing[2] = '\0';
+    }
+
+    printf("|                          -----Level Statistics-----                          |\n");
+    printf("|                            Incorrect Answers:  %d%s                           |\n", incorrect_answers, incorrect_spacing);
+    printf("|                            Correct Answers:    %d%s                           |\n", correct_answers, correct_spacing);
+    printf("|                            Hitrate Percentage: %0.2f%s                        |\n", accuracy, accuracy_spacing);
+    printf(".______________________________________________________________________________.\n");
 }
