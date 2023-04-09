@@ -25,29 +25,63 @@ char* morseCode[] = {"-----", ".----", "..---","...--", "....--", ".....", "-...
 // Must declare the main assembly entry point before use.
 void main_asm();
 void printStatistics();
-// Initialise a GPIO pin – see SDK for detail on gpio_init()
+
+/**
+ * @brief Initialise a GPIO pin – see SDK for detail on gpio_init()
+ * 
+ * @param pin Raspberry pin to initialize
+ */
 void asm_gpio_init(uint pin) {
  gpio_init(pin);
 }
-// Set direction of a GPIO pin – see SDK for detail on gpio_set_dir()
+
+
+/**
+ * @brief Set direction of a GPIO pin – see SDK for detail on gpio_set_dir()
+ * 
+ * @param pin Raspberry pin to set direction
+ * @param out direction to set pin in 
+ */
 void asm_gpio_set_dir(uint pin, bool out) {
  gpio_set_dir(pin, out);
 }
-// Get the value of a GPIO pin – see SDK for detail on gpio_get()
+
+/**
+ * @brief Get the value of a GPIO pin – see SDK for detail on gpio_get()
+ * 
+ * @param pin Raspberry pin to get value of
+ */
 bool asm_gpio_get(uint pin) {
  return gpio_get(pin);
 }
-// Set the value of a GPIO pin – see SDK for detail on gpio_put()
+
+
+
+/**
+ * @brief Set the value of a GPIO pin – see SDK for detail on gpio_put()
+ * 
+ * @param pin Raspberry pin to set value of
+ * @param value Value to set pin to 
+ */
 void asm_gpio_put(uint pin, bool value) {
  gpio_put(pin, value);
 }
 
-// Enable falling-edge interrupt – see SDK for detail on gpio_set_irq_enabled()
+
+/**
+ * @brief Enable falling-edge interrupt – see SDK for detail on gpio_set_irq_enabled()
+ * 
+ * @param pin Raspberry pin to set falling edge interupt on 
+ */
 void asm_gpio_set_irq(uint pin) {
  gpio_set_irq_enabled(pin, GPIO_IRQ_EDGE_FALL, true);
 }
 
-// Enable rising-edge interrupt 
+/**
+ * @brief Enable rising-edge interrupt  – see SDK for detail on gpio_set_irq_enabled()
+ * 
+ * @param pin Raspberry pin to set rising-edge interupt on 
+ */
 void asm_gpio_set_irq1(uint pin) {
  gpio_set_irq_enabled(pin, GPIO_IRQ_EDGE_RISE, true);
 }
@@ -84,61 +118,94 @@ static inline uint32_t urgb_u32(uint8_t r, uint8_t g, uint8_t b) {
             (uint32_t) (b);
 }
 
+/**
+ * @brief Set Led colour to blue
+ * 
+ */
 static inline void led_set_blue() {
     put_pixel(urgb_u32(0x00, 0x00, 0x7F));
 }
-
+/**
+ * @brief Set Led colour to red
+ * 
+ */
 static inline void led_set_red() {
     put_pixel(urgb_u32(0x7F, 0x00, 0x00));
 }
-
+/**
+ * @brief Set Led colour to orange
+ * 
+ */
 static inline void led_set_orange() {
     put_pixel(urgb_u32(0xFF, 0x8C, 0x00));
 }
+/**
+ * @brief Set Led colour to yellow
+ * 
+ */
 static inline void led_set_green() {
     put_pixel(urgb_u32(0x00, 0xFF, 0x00));
 }
+/**
+ * @brief Turn LED off
+ * 
+ */
 static inline void led_set_off() {
     put_pixel(urgb_u32(0x00, 0x00, 0x00));
 }
+/**
+ * @brief Set Led colour to yellow
+ * 
+ */
 static inline void led_set_yellow() {
     put_pixel(urgb_u32(0xD7, 0xFF, 0x00));
 }
 
-//initialise watchdog timer
+/**
+ * @brief Initalise watchdog timer.
+ * 
+ * enables the watchdogtimer set to the max time, approx 8.3 secs
+ */
 void watchdog_init(){
     if(watchdog_caused_reboot){
         printf("Game Restarted due to inactivity!\n");
     }
-    //enable the watchdogtimer set to the max time, approx 8.3 secs
-    //One sets the watchdog timer to pause during debug 
     watchdog_enable(0x7fffff, 0); 
     watchdog_update();
 }
 
-//Initialising variables
-//need to be global cuz we jump in and out of ASM
-int interrupt_occured = 0;               //to indicate that an interrupt needs to be dealt with   
-int start_high = 0;                      //set to 1 once first button press has been released (first rising edge interrupt)
-int start_low = 0;                       //set to 1 once second button press has occured (second falling edge interrupt)
-int i = 0;                               //used to track position in the array
-int k = 0;                               //used to track place in first_seq array - if inputting the first char it should = 0, any char after it should = 1
-bool edge_type = true;                   //when set to true, the button release is being dealt with. when set to false, button pressed
-uint32_t low_interval, high_interval;    //to store the latest time segments
-uint32_t time_intervals[100];                 //array to hold the time_intervals input (4 dots/dashes, 3 spaces)
-int process_sequence = 0;                //set to 1 when the 2 second alarm timer goes off, program knows to take the users input and process it
-int lives = 3;                           //lives set to 3 at the start
-int score = 0;                           //score set to 0 at the start
-char character;                          //the character the user should input morse for
-int repeat = 0;                          //used in the levels to repeat the same character or generate another one based on if the user input the correct code
-int level_choice;                        //to decide which level to play
-bool alarm_1_done = false;
-bool alarm_2_done = false;
+//Initialising global variables, necessary for handling arm interrupts
+int interrupt_occured = 0;               ///<Brief To indicate that an interrupt needs to be dealt with   
+int start_high = 0;                      ///<Brief Set to 1 once first button press has been released (first rising edge interrupt)
+int start_low = 0;                       ///<Brief Set to 1 once second button press has occured (second falling edge interrupt)
+int i = 0;                               ///<Brief Used to track position in the array
+int k = 0;                               ///<Brief Used to track place in first_seq array - if inputting the first char it should = 0, any char after it should = 1
+bool edge_type = true;                   ///<Brief When set to true, the button release is being dealt with. when set to false, button pressed
+uint32_t low_interval, high_interval;    ///<Brief To store the latest time segments
+uint32_t time_intervals[100];            ///<Brief Array to hold the time_intervals input (4 dots/dashes, 3 spaces)
+int process_sequence = 0;                ///<Brief Set to 1 when the 2 second alarm timer goes off, program knows to take the users input and process it
+int lives = 3;                           ///<Brief Lives set to 3 at the start
+int score = 0;                           ///<Brief Score set to 0 at the start
+char character;                          ///<Brief The character the user should input morse for
+int repeat = 0;                          ///<Brief Used in the levels to repeat the same character or generate another one based on if the user input the correct code
+int level_choice;                        ///<Brief To decide which level to play
+bool alarm_1_done = false;               ///<Brief Set to true when first 1 second alarm interrupt occurs
+bool alarm_2_done = false;               ///<Brief Set to true when first 2 second alarm interrupt occurs
 
-int incorrect_answers = 0;               //for incorrect answer statistics
-int correct_answers = 0;                 //for correct answers statistics
+int incorrect_answers = 0;               ///<Brief For incorrect answer statistics
+int correct_answers = 0;                 ///<Brief For correct answers statistics
 
-//sets the start_high variable to 1 - to be called from ASM
+
+/**
+ * @brief Deals with button being released - called from ASM 
+ * 
+ * Sets the start_high variable to 1. 
+ * Sets alarm_1_done and alarm_2_done to false, allowing alarm interrupts to be handled again.
+ * 
+ * @param i value of 1 passed from arm
+ * @see Global Variables: start_high - alarm_1_done - alarm_2_done
+ * @see Functions: handle_alarm()
+ */
 void set_start_high(int i){
     start_high = i;
     alarm_1_done = false;
@@ -146,27 +213,56 @@ void set_start_high(int i){
 }
 
 
-//sets the start_low variable to 1 - to be called from ASM
+/**
+ * @brief Deals with button being pressed - called from ASM 
+ * 
+ * Sets the start_low variable to 1. 
+ * 
+ * @param i value of 1 passed from arm
+ */
 void set_start_low(int i){
     start_low = i;
 }
 
-//sets the interrupt flag variable to high - to be called from ASM
+/**
+ * @brief Checks for a GPIO interrupt- called from ASM 
+ * 
+ * Sets the interrupt flag variable to high 
+ * 
+ * @param signal value of 1 passed from arm when interrupt occurs
+ */
 void check_for_interrupt(int signal){
     interrupt_occured = signal;
 }
 
-//stores the interval between button presses
+
+/**
+ * @brief stores the interval between button presses
+ * 
+ * @param interval Amount of time between button presses
+ */
 void store_interval_low(int interval){
     low_interval = interval;
 }
 
-//stores the interval the button has been pressed for
+
+/**
+ * @brief stores the interval the button has been pressed for
+ * 
+ * @param interval Amount of time the button has been pressed
+ */
 void store_interval_high(int interval){
     high_interval = interval;
 }
 
-//used to put a null terminator on the end of the string of morse code so it can be used in comparison function
+ 
+/**
+ * @brief Places terminator at the end of a string.
+ * 
+ * Adds a space and a null terminator on a string of morse code so it can be used in comparison function
+ * 
+ * @param morse_string 
+ */
 void null_terminate_string(char *morse_string){
     int i = 0; //counter
     
@@ -175,16 +271,23 @@ void null_terminate_string(char *morse_string){
         i++;  
     }
 
-    morse_string[i] = ' '; //space so that it is compatible with ConvertMorse function
-    morse_string[i+1] = '\0'; //null terminate
+    morse_string[i] = ' '; 
+    morse_string[i+1] = '\0'; 
 }
 
-//takes an array of uint32_t values, times between rising and falling edge interrupts
-//converts the times between falling and rising edge to 1's (dashes) and 0's (dots)
+
+
+/**
+ * @brief Converts time intervals between buttons to 1's (dashes) and 0's (dots)
+ * 
+ * @param intervals Array of uint32_t values, times between rising and falling edge interrupts
+ * @param morse_string Array to store dots and dashes in 
+ * @param k position in intervals array
+ */
 void convert_to_morse(uint32_t intervals[], char *morse_string, int k){
     int counter = 0; 
-    while (time_intervals[k] != 0){                                  //to loop over the array of times
-        if (time_intervals[k] <= 150000){                            //if button was pressed for less than 0.15 s
+    while (time_intervals[k] != 0){                             //to loop over the array of times
+        if (time_intervals[k] <= 150000){                       //if button was pressed for less than 0.15 s
         morse_string[counter] = '.';                            //it is a dot
         } 
         if (time_intervals[k] <= 1000000 && time_intervals[k] > 150000){  //if button was pressed for between 0.15 and 1 s 
@@ -199,7 +302,12 @@ void convert_to_morse(uint32_t intervals[], char *morse_string, int k){
     null_terminate_string(morse_string);
 }
 
-
+/**
+ * @brief Handles GPIO interrupts
+ * 
+ * @see Global Variables: edge_type, start_high, time_intervals, low_interval, high_interval, interrupt_occurred
+ * 
+ */
 void handle_gpio_interrupt() {
     if (edge_type && start_high == 1){      //if the button has just been released (rising edge) and we are passed the starting phase
         i++;                                //increment the counter to move along in the array
@@ -216,7 +324,19 @@ void handle_gpio_interrupt() {
       }
 }
 
-// Return a random character from 0-9 or A-Z when called
+
+/**
+ * @brief Prints the Characters to be entered in morse code for level 1 and 2 
+ * 
+ * Generates a random character from 0-9 or A-Z.
+ * Prints the character with or without its morse code equivalent depending on the level.
+ * Returns the random character for use by other funcions
+ * 
+ * @param choose_level The level, 1 or 2, chosen by the player
+ * @return char - The random char generated from teh function
+ * 
+ * @see Global Variables: morseCode[]
+ */
 char randomChar(int choose_level) {
     char random_char;
 
@@ -250,13 +370,21 @@ char randomChar(int choose_level) {
 
 }
 
+/**
+ * @brief Handles the alarm timer interrupt
+ * 
+ * Set up to handle spaces for levels 3 and (Unused).
+ * After two one second alarm timer interrupts the programme will process user inputs.
+ * Alarm interrupts will then be disblaed until next GPIO input
+ * 
+ * @see Global Variables: process_sequence, alarm_1_done, alarm_2_done
+ */
+
 void handle_alarm(){
     if (!alarm_2_done){
         if (!alarm_1_done){
-            //printf("one second has passed!\n");
             alarm_1_done = !alarm_1_done;
         }else{
-            //printf("two seconds have passed!\n");
             process_sequence = 1;
             alarm_2_done = !alarm_2_done;
         }
@@ -265,18 +393,25 @@ void handle_alarm(){
     return;
 }
 
+/**
+ * @brief Outputs user input
+ * 
+ * @param character Users input as an ASCII character
+ * @param morse Users input as morse
+ */
 void output_user_input(char character, char *morse){
     printf("|                                                                              |\n");
     printf("|                        You input %s : %c                                    |\n", morse, character);
     printf("|                                                                              |\n");
     return;
 }
-//start handling the arm input array in c
-//called after two second no button pressing alarm 
 
 
 
-//printing entry message level 1
+
+/**
+ * @brief printing entry message level 1
+ */
 void print_level_one(){
     printf(".______________________________________________________________________________.\n");
     printf("|                                                                              |\n");
@@ -287,7 +422,10 @@ void print_level_one(){
     return;
 }
 
-//printing entry message level 2
+
+/**
+ * @brief printing entry message level 2
+ */
 void print_level_two(){
     printf(".______________________________________________________________________________.\n");
     printf("|                                                                              |\n");
@@ -298,7 +436,11 @@ void print_level_two(){
     return;
 }
 
-//printing level complete messages
+/**
+ * @brief Printing level complete message and statistics
+ * 
+ * @param choose_level level chosen by user
+ */
 void level_complete_message(int choose_level){
     if (choose_level == 1){
         printf("|                     Congratulations, you passed level 1 !                    |\n");
@@ -313,7 +455,11 @@ void level_complete_message(int choose_level){
     printStatistics(); // Print statistics relating to performance
 }
 
-//used to clear the array storing the timer intervals
+
+/**
+ * @brief used to clear the array storing the timer intervals
+ * 
+ */
 void clear_time_intervals(){
     int x = 0;
         while(time_intervals[x] != 0){
@@ -322,7 +468,10 @@ void clear_time_intervals(){
         }
 }
 
-
+/**
+ * @brief Printing game complete message 
+ * 
+ */
 void print_game_complete(){
     printf(".__.\n");
     printf("|                                                                              |\n");
@@ -332,7 +481,17 @@ void print_game_complete(){
     return;
 }
 
-//level one and two, depending on what "choose_level" is input. 1 for level 1, 2 for level 2. 
+
+/**
+ * @brief Runs level 1 and 2.
+ * 
+ * Handles all inputs, outputs and corresponding logic for levels 1 and 2 
+ * 
+ * @param choose_level Level chosen by player 
+ * @return int - Return 1 if lost, return 0 if won 
+ * 
+ * @see Global Variables: incorrect_answers, correct_answers, lives, score, repeat, level_choice, character, process_sequence, interrupt_occured, time_intervals, morse_sequence, k, start_high
+ */
 int level_one_and_two(int choose_level) {
     if (choose_level == 1){ //print the level 1 entry message
         print_level_one();
@@ -343,8 +502,8 @@ int level_one_and_two(int choose_level) {
     }
 
     // Reset statistic variables at the start of a new level
-    int incorrect_answers = 0;
-    int correct_answers = 0;
+    incorrect_answers = 0;
+    correct_answers = 0;
 
     //char character; 
     //loop until the player completes the level or runs out of lives
