@@ -12,9 +12,9 @@
 #include "hardware/clocks.h"
 #include "ws2812.pio.h"
 
-#define IS_RGBW true        // Will use RGBW format
-#define NUM_PIXELS 1        // There is 1 WS2812 device in the chain
-#define WS2812_PIN 28       // The GPIO pin that the WS2812 connected to
+#define IS_RGBW true        ///< Brief Will use RGBW format
+#define NUM_PIXELS 1        ///< Brief There is 1 WS2812 device in the chain
+#define WS2812_PIN 28       ///< Brief The GPIO pin that the WS2812 connected to
 
 #define MAXSIZE 100
 
@@ -485,6 +485,7 @@ void clear_time_intervals(){
 
 
 
+
 /**
  * @brief Runs level 1 and 2.
  * 
@@ -494,6 +495,7 @@ void clear_time_intervals(){
  * @return int - Return 1 if lost, return 0 if won 
  * 
  * @see Global Variables: incorrect_answers, correct_answers, lives, score, repeat, level_choice, character, process_sequence, interrupt_occured, time_intervals, morse_sequence, k, start_high
+ * @see Functions: print_level_one(), print_level_two(), led_set_green(), led_set_orange(), led_set_yellow(), randomChar(), convert_to_morse(), convertMorse(), clear_time_intervals(), level_complete_message(), print_game_complete()
  */
 int level_one_and_two(int choose_level) {
     if (choose_level == 1){ //print the level 1 entry message
@@ -600,7 +602,16 @@ int level_one_and_two(int choose_level) {
 
 
 
-
+/**
+ * @brief Choose a level from the home screen
+ * 
+ * Allows the user to choose a level to play by inputting a string of Morse Code via  GP21
+ * 
+ * @return int - Return 1 if choice is level 1, return 2 if choice is level 2, return 0 if choice is invalid 
+ * 
+ * @see Global Variables: process_sequence, interrupt_occured, time_intervals, morse_sequence, k
+ * @see Functions: handle_gpio_interrupt(), convert_to_morse(), clear_time_intervals()
+ */
 int choose_level() {
     while (process_sequence != 1){      //until the alarm goes off, accept inputs
         if (interrupt_occured){         //input occured
@@ -635,7 +646,16 @@ int choose_level() {
 
 }
 
-// Main entry point of the application
+ /**
+ * @brief Main entry point of the application
+ * 
+ * Used as the entry point to execute all code needed to run the game
+ * 
+ * @return int - Return 0 upon successful completion 
+ * 
+ * @see Global Variables: level_choice
+ * @see Functions: stdio_init_all(), pio_add_program(), ws2812_program_init(), watchdowg_init(), main_asm(), welcomeMessage(), led_set_blue(), level_one_and_two()
+ */
 int main() {
     //initialising
     stdio_init_all(); 
@@ -672,7 +692,12 @@ int main() {
 }
 
 
-// Print the welcome message
+ /**
+ * @brief Print welcome message
+ * 
+ * Prints the title graphic, group name and members, and level choice when the game is started 
+ *
+ */
 void welcomeMessage() {
     // 80 char width, pipes inclusive
     printf(".______________________________________________________________________________.\n");
@@ -726,7 +751,15 @@ void welcomeMessage() {
     printf(".______________________________________________________________________________.\n");
 }
 
-
+ /**
+ * @brief Convert a word to Morse Code
+ * 
+ * Take in a string of letters and convert to Morse Code equivalent
+ * 
+ * @param word Word to be converted
+ * @return char* - Converted string in Morse Code
+ * 
+ */
 char* convertMorse(char* word){
     char* converted = (char*)malloc(MAXSIZE);                           // allocate memory space for output string
     int converted_index = 0, word_index = 0, letter_index = 0;          // initiliase index counters to 0
@@ -758,7 +791,15 @@ char* convertMorse(char* word){
     converted[converted_index] = '\0';                                // null-terminate output (removing trailing question mark)
     return converted;                       
 }
-
+ /**
+ * @brief Print level statistics
+ * 
+ * Print the statistics of the incorrect and correct answers after level completion
+ * 
+ * 
+ * @see Global Variables: correct_answers, incorrect_answers
+ *
+ */
 void printStatistics() {
     // Calculate accuracy of correct answers
     double accuracy;
