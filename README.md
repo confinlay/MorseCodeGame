@@ -9,7 +9,8 @@ When started, the Morse Code game displays a 'home screen' in the terminal which
 By inputting a series of dots and dashes, the player can choose whichever level they would like to play, depending on skill level. The basic level structure is shown in the block diagram below. 
 
  <img width="338" alt="Picture 1" src="https://user-images.githubusercontent.com/106957733/236921849-1d6d2248-91fd-4c22-8150-f9652d68e5c3.png">
-* Block diagram of level flow *
+ 
+ *Block diagram of level flow* 
 
 Each of the following levels is built around this structure, with minor changes being made to the gameplay for each section. These changes include removing the equivalent morse code for a given letter, or by changing the input to a full word instead of a single letter. 
 
